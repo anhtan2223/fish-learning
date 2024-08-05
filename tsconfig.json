@@ -18,7 +18,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"] ,
+      "@ui/*" : ["./src/ui/*"] ,
+      "@config/*" : ["./src/config/*"] ,
+      "@data/*" : ["./src/data/*"] ,
+      "@interface/*" : ["./src/lib/interface/*"] ,
+      "@service/*" : ["./src/lib/service/*"] ,
+      "@util" : ["./src/lib/utils"] ,
+      "@storage" : ["./src/lib/storage"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
