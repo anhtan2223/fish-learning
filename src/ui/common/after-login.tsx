@@ -18,18 +18,18 @@ export default function AfterLogin() {
     }
     function ChangePage() {
         return <div className=''>
-            <Link href='/baidang' className='flex gap-3 py-1 text-black hover:text-primary cursor-pointer transition-colors'>
+            <Link href='/baidang' className='flex gap-3 py-1 hover:text-primary cursor-pointer transition-colors'>
                 <FormOutlined style={{ fontSize: '20px' }} />
                 Bài Đăng Của Tôi
             </Link>
-            <Link href='/taikhoan' className='flex gap-3 py-1 text-black hover:text-primary cursor-pointer transition-colors'>
+            <Link href='/taikhoan' className='flex gap-3 py-1  hover:text-primary cursor-pointer transition-colors'>
                 <UserOutlined style={{ fontSize: '20px' }} />
                 Cài Đặt Tài Khoản
             </Link>
             <div>
                 <hr />
             </div>
-            <div className='flex gap-3 py-1 text-black hover:text-primary  cursor-pointer' onClick={logout}>
+            <div className='flex gap-3 py-1 hover:text-primary  cursor-pointer' onClick={logout}>
                 <LogoutOutlined style={{ fontSize: '20px' }} />
                 Đăng Xuất
             </div>

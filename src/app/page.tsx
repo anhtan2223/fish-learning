@@ -16,7 +16,7 @@ export default function Home() {
         />
         <Image
           className="relative invert"
-          src="/logo.png"
+          src="/logo.light.png"
           alt="Next.js"
           width={180}
           height={37}

@@ -17,10 +17,11 @@ const config: Config = {
       backgroundColor: {
         'primary': '#39ace7',
         'primary-dark': '#1e88e5',
+        'dark' : '#293646',
         'secondary': '#405CD6',
         'secondary-dark': '#0033a0',
         'gray': "#f0f0f0" ,
-        'gray-dark' : "#333333"
+        'gray-dark' : "#1B222B"
       },
       color: {
         'primary': '#39ace7',

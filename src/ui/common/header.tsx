@@ -23,7 +23,7 @@ export default function Header() {
 
     return (
         <>
-            <div className='h-fit w-3/4 flex mx-auto'>
+            <div className='h-fit w-full flex mx-auto px-[12px] py-2'>
                 <div className='w-fit flex items-center'>
                     <Link href={'/'}>
                         <Image src={resolvedTheme == 'dark' ? '/logo.dark.png' : '/logo.light.png'} 
@@ -38,7 +38,7 @@ export default function Header() {
             </div>
 
             <div className='w-full z-40 lg:relative h-fit bg-primary dark:bg-primary-dark'>
-                <div className='flex h-full w-full justify-center lg:justify-start lg:w-3/4 mx-auto text-white'>
+                <div className='flex h-full w-full justify-center lg:justify-start lg:w-full  mx-auto text-white'>
                     {info.map(i => {
                         return <Link href={i.href} key={i.name} className={
                             clsx(
