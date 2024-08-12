@@ -30,8 +30,14 @@ export default function MenuQuestion({ number = 4 }: {
             onClose={onClose}
             open={open}
             key="drawer"
+            className='relative'
         >
-            {items}
+            <div className='flex flex-grow'>
+                {items}
+            </div>
+            <div className='absolute bottom-[24px] right-[24px]'>
+                <Button>Kết Thúc Bài Kiểm Tra</Button>
+            </div>
         </Drawer>
 
     </>

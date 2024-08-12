@@ -13,7 +13,7 @@ const info = [
     { name: "Bài Học", href: "/course" },
     { name: "Tài Liệu", href: "/document" },
     { name: "Blog", href: "/blog" },
-    { name: "Test", href: "/test" },
+    { name: "Bài Học", href: "/test" },
 ]
 
 export default function Header() {

@@ -12,7 +12,7 @@ export default function BeforeLogin() {
     return <>
         <div className='flex'>
             <Button type="text" className='h-fit ml-5 text-black dark:text-white'>Đăng Ký</Button>
-            <Button className='h-fit ml-5 text-white' onClick={login}>Đăng Nhập</Button>
+            <Button className='h-fit ml-5 text-black dark:text-white' onClick={login}>Đăng Nhập</Button>
             <SwitchMode></SwitchMode>
         </div>
     </>
