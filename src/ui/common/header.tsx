@@ -8,6 +8,7 @@ import AfterLogin from '@/ui/common/after-login';
 import { isLoginAtom } from '@/lib/storage';
 import { useAtomValue } from 'jotai';
 import { useTheme } from 'next-themes';
+import Logo from '@/ui/common/logo';
 
 const info = [
     { name: "Bài Học", href: "/course" },
@@ -26,9 +27,7 @@ export default function Header() {
             <div className='h-fit w-full flex mx-auto px-[12px] py-2'>
                 <div className='w-fit flex items-center'>
                     <Link href={'/'}>
-                        <Image src={resolvedTheme == 'dark' ? '/logo.dark.png' : '/logo.light.png'} 
-                            width={60} height={60} 
-                            className='w-auto h-full ' alt='Logo'></Image>
+                        <Logo></Logo>
                     </Link>
                 </div>
 

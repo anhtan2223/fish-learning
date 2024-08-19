@@ -2,7 +2,7 @@ import HeaderAssignment from "@/ui/common/header-assignment";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="bg-gray dark:bg-gray-dark min-h-screen">
+        <div className="bg-gray dark:bg-gray-dark min-h-screen transition-all">
             <div className="bg-white dark:bg-dark padding">
                 <HeaderAssignment></HeaderAssignment>
             </div>

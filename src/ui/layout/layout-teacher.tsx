@@ -11,6 +11,7 @@ import { Layout, Menu, theme } from 'antd';
 import Link from 'next/link';
 import Logo from '@/ui/common/logo';
 
+
 const { Header, Content, Sider } = Layout;
 
 export type MenuItem = Required<MenuProps>['items'][number];
@@ -30,43 +31,26 @@ export function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link href='/course'>Khoá Học</Link>, '1', <PieChartOutlined />),
+  getItem("Lớp Học", '1', <PieChartOutlined /> , [
+    getItem(<Link href='/teacher'>Lớp Học Của Tôi</Link>, '3'),
+    getItem(<Link href='/teacher/add-course'>Thêm Mới Lớp Học</Link>, '4'),
+  ]),
   getItem('Tài Liệu', '2', <DesktopOutlined />),
   getItem('Blog', '7', <DesktopOutlined />),
-  getItem('Tài Khoản', 'sub1', <UserOutlined />, [
-    getItem('Tài Khoản Của tôi', '3'),
-    getItem('Khoá Học Của Tôi', '4'),
-    getItem('Bài Đăng Của Tôi', '5'),
-    getItem('Đăng Xuất', '6'),
+  getItem('Tài Khoản', '8', <UserOutlined />, [
+    getItem('Tài Khoản Của Tôi', '9'),
+    getItem(<Link href='/course'>Đăng Xuất</Link>, '10'),
   ]),
 ];
 
-const itemsCourse : MenuItem[] = [
-  getItem('Giới Thiệu Về Máy Học', '1', null , [
-    getItem('Máy Học Là Gì', '11'),
-    getItem('Phân Loại Máy Học', '12'),
-    getItem('Ứng Dụng Máy Học', '13'),
-  ]) ,
-  getItem('KNN', '2', null ),
-  getItem('Đánh Giá Hiệu Quả Của Giải Thuật', '4', null),
-  getItem('Bayesian Classification', '5', null),
-  getItem('Trích Đặc Trưng', '6', null),
-  getItem('Cây Quyết Định', '7', null),
-  getItem('Phương Pháp Tập Hợp Mô Hình', '8', null),
-  getItem('Mạng Neuron Nhân Tạo', '9', null),
-  getItem('SVM', '10', null),
-  getItem('Giải Thuật Gom Cụm', '11', null),
-
-
-]
-
-const App = (
+const TeacherLayout = (
   {children , title }:
-  {children: React.ReactNode , title : String }) => {
+  {children: React.ReactNode , title? : String }) => {
   const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
 
   return (
     <>
@@ -79,7 +63,7 @@ const App = (
         <Layout>
           <Header style={{ height : 'fit-content' , padding: 8, background: colorBgContainer , position: 'sticky',top: 0,zIndex: 1,}} className='border dark:border-gray-600'>
             <div className='w-full h-full px-[12px] flex items-center' >
-              <Link href="/course">
+              <Link href="/teacher">
                 <Logo></Logo>
               </Link>
               <div className='ml-5 flex flex-grow font-bold'>{title}</div>
@@ -104,4 +88,4 @@ const App = (
   );
 };
 
-export default App;
+export default TeacherLayout;

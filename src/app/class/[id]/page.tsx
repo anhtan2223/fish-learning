@@ -3,7 +3,7 @@ import type { CollapseProps } from 'antd';
 import Link from "next/link";
 
 
-export default function Page() {
+export default function ClassPage() {
   const items: CollapseProps['items'] = [
     {
       key: '1',

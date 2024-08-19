@@ -1,6 +1,7 @@
 'use client'
 import { MenuOutlined } from '@ant-design/icons';
 import { FloatButton, Drawer, Button } from 'antd';
+import Link from 'next/link';
 import { useState } from 'react';
 
 
@@ -36,7 +37,9 @@ export default function MenuQuestion({ number = 4 }: {
                 {items}
             </div>
             <div className='absolute bottom-[24px] right-[24px]'>
-                <Button>Kết Thúc Bài Kiểm Tra</Button>
+                <Link href="/test">
+                    <Button>Kết Thúc Bài Kiểm Tra</Button>
+                </Link>
             </div>
         </Drawer>
 

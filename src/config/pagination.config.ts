@@ -1,0 +1,1 @@
+export const pageSizeOptions = [12 , 20 , 40 , 80]
