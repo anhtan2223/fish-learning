@@ -30,7 +30,7 @@ export function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link href='/course'>Khoá Học</Link>, '1', <PieChartOutlined />),
+  getItem(<Link href='/'>Khoá Học</Link>, '1', <PieChartOutlined />),
   getItem('Tài Liệu', '2', <DesktopOutlined />),
   getItem('Blog', '7', <DesktopOutlined />),
   getItem('Tài Khoản', 'sub1', <UserOutlined />, [
@@ -79,7 +79,7 @@ const App = (
         <Layout>
           <Header style={{ height : 'fit-content' , padding: 8, background: colorBgContainer , position: 'sticky',top: 0,zIndex: 1,}} className='border dark:border-gray-600'>
             <div className='w-full h-full px-[12px] flex items-center' >
-              <Link href="/course">
+              <Link href="/">
                 <Logo></Logo>
               </Link>
               <div className='ml-5 flex flex-grow font-bold'>{title}</div>

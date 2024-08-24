@@ -13,7 +13,7 @@ export default function TeacherListCourse() {
     return (
         <div className="flex justify-around flex-wrap">
             {Array.from({ length: pageSize }).map((_, index) => (
-                <div key={index} onClick={ () => router.push("/class") } className='pointer transform hover:scale-110 transition-transform'>
+                <div key={index} onClick={ () => router.push("/course") } className='pointer transform hover:scale-110 transition-transform'>
                     <Course></Course>
                 </div>
             ))}

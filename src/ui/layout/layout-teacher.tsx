@@ -39,7 +39,7 @@ const items: MenuItem[] = [
   getItem('Blog', '7', <DesktopOutlined />),
   getItem('Tài Khoản', '8', <UserOutlined />, [
     getItem('Tài Khoản Của Tôi', '9'),
-    getItem(<Link href='/course'>Đăng Xuất</Link>, '10'),
+    getItem(<Link href='/'>Đăng Xuất</Link>, '10'),
   ]),
 ];
 

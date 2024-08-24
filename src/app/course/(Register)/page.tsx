@@ -22,16 +22,7 @@ export default function Page() {
           Niên Khoá
         </div>
         <div className="">
-          2023-2024
-        </div>
-      </div>
-
-      <div className="flex w-full">
-        <div className="w-[120px] font-semibold flex justify-start" >
-          Học Kỳ
-        </div>
-        <div className="">
-          1
+          Học Kỳ 1 - 2023-2024  
         </div>
       </div>
 
@@ -44,10 +35,10 @@ export default function Page() {
         </div>
       </div>
       <div className="flex w-full justify-center gap-5">
-        <Link href="/class/id">
+        <Link href="/course/id">
           <Button ghost type="primary">Ghi Danh Lớp Học</Button>
         </Link>
-        <Link href="/course">
+        <Link href="/">
           <Button danger ghost>Quay Lại</Button>
         </Link>
       </div>

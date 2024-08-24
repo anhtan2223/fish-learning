@@ -11,7 +11,7 @@ import { useTheme } from 'next-themes';
 import Logo from '@/ui/common/logo';
 
 const info = [
-    { name: "Bài Học", href: "/course" },
+    { name: "Bài Học", href: "/" },
     { name: "Tài Liệu", href: "/document" },
     { name: "Blog", href: "/blog" },
     { name: "Bài Học", href: "/test" },
