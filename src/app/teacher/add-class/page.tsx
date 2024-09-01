@@ -1,3 +1,4 @@
+'use client'
 import Tiptap from "@/ui/common/rich-text-editor";
 import { Button, Select } from "antd";
 import Link from "next/link";
@@ -50,9 +51,11 @@ export default function AddCourse() {
                         Ghi Chú
                     </div>
                     <div className="w-full">
-                        {/* <TextArea rows={4} /> */}
-                        {/* <TextArea placeholder="Autosize height based on content lines" autoSize /> */}
-                        <Tiptap></Tiptap>
+                    <TextArea
+                        placeholder="Nhập ghi chú cho lớp học"
+                        autoSize={{ minRows: 3, maxRows: 6 }}
+                        className="w-full mx-3"
+                    />
                     </div>
                 </div>
 

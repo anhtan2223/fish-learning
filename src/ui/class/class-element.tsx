@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { Avatar } from 'antd';
+import React from 'react';
 
-export default function Course() {
+export default function ClassElement() {
     
     return (
         <div className='w-[250px] min-h-fit border bg-white dark:bg-dark rounded-lg p-3 mb-4'>

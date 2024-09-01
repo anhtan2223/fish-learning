@@ -35,7 +35,7 @@ export default function Page() {
         </div>
       </div>
       <div className="flex w-full justify-center gap-5">
-        <Link href="/course/id">
+        <Link href="/class/id">
           <Button ghost type="primary">Ghi Danh Lớp Học</Button>
         </Link>
         <Link href="/">

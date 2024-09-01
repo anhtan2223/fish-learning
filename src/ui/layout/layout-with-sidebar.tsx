@@ -1,8 +1,9 @@
 'use client'
 import React, { useState } from 'react';
 import {
-  DesktopOutlined,
-  PieChartOutlined,
+  BookOutlined,
+  EditOutlined,
+  FileOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import SwitchMode from "@/ui/common/switch-mode";
@@ -10,6 +11,7 @@ import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
 import Link from 'next/link';
 import Logo from '@/ui/common/logo';
+import AfterLogin from '../common/after-login';
 
 const { Header, Content, Sider } = Layout;
 
@@ -30,35 +32,16 @@ export function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link href='/'>Khoá Học</Link>, '1', <PieChartOutlined />),
-  getItem('Tài Liệu', '2', <DesktopOutlined />),
-  getItem('Blog', '7', <DesktopOutlined />),
-  getItem('Tài Khoản', 'sub1', <UserOutlined />, [
-    getItem('Tài Khoản Của tôi', '3'),
-    getItem('Khoá Học Của Tôi', '4'),
-    getItem('Bài Đăng Của Tôi', '5'),
-    getItem('Đăng Xuất', '6'),
-  ]),
+  getItem(<Link href='/'>Lớp Học</Link>, '1', <BookOutlined />),
+  getItem(<Link href='/document'>Tài Liệu</Link>, '2', <FileOutlined />),
+  getItem(<Link href='/blog'>Bài Viết</Link>, '3', <EditOutlined />),
+  // getItem('Tài Khoản', 'account', <UserOutlined />, [
+  //   getItem(<Link href='/account'>Tài Khoản Của tôi</Link>, 'account1'),
+  //   getItem(<Link href='/account/class'>Lớp Học Của Tôi</Link>, 'account2'),
+  //   getItem(<Link href='/account/blog'>Bài Đăng Của Tôi</Link>, 'account3'),
+  //   getItem('Đăng Xuất', '6'),
+  // ]),
 ];
-
-const itemsCourse : MenuItem[] = [
-  getItem('Giới Thiệu Về Máy Học', '1', null , [
-    getItem('Máy Học Là Gì', '11'),
-    getItem('Phân Loại Máy Học', '12'),
-    getItem('Ứng Dụng Máy Học', '13'),
-  ]) ,
-  getItem('KNN', '2', null ),
-  getItem('Đánh Giá Hiệu Quả Của Giải Thuật', '4', null),
-  getItem('Bayesian Classification', '5', null),
-  getItem('Trích Đặc Trưng', '6', null),
-  getItem('Cây Quyết Định', '7', null),
-  getItem('Phương Pháp Tập Hợp Mô Hình', '8', null),
-  getItem('Mạng Neuron Nhân Tạo', '9', null),
-  getItem('SVM', '10', null),
-  getItem('Giải Thuật Gom Cụm', '11', null),
-
-
-]
 
 const App = (
   {children , title }:
@@ -83,7 +66,8 @@ const App = (
                 <Logo></Logo>
               </Link>
               <div className='ml-5 flex flex-grow font-bold'>{title}</div>
-              <SwitchMode></SwitchMode>
+              <AfterLogin></AfterLogin>
+              {/* <SwitchMode></SwitchMode> */}
             </div>
           </Header>
           <Content

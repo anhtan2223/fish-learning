@@ -1,9 +1,10 @@
 import { Button } from "antd";
 import Link from 'next/link'
-import SortComponent from "@/ui/common/sort";
-import MySearch from "@/ui/common/search";
+import SortComponent from "@ui/common/sort";
+import MySearch from "@ui/common/search";
+import React from "react";
 
-export default function SearchCourseBar({ isAdd = false }: {
+export default function SearchClassBar({ isAdd = false }: {
     isAdd?: boolean
 }) {
     const sortOtp = [

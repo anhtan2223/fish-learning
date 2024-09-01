@@ -1,15 +1,15 @@
 'use client'
 import React, { useState } from 'react';
 import {
-  DesktopOutlined,
-  PieChartOutlined,
-  UserOutlined,
+  BookOutlined,
+  EditOutlined,
+  FileOutlined,
 } from '@ant-design/icons';
-import SwitchMode from "@/ui/common/switch-mode";
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
 import Link from 'next/link';
 import Logo from '@/ui/common/logo';
+import AfterTeacherLogin from '../common/after-teacher-login';
 
 
 const { Header, Content, Sider } = Layout;
@@ -31,16 +31,12 @@ export function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Lớp Học", '1', <PieChartOutlined /> , [
+  getItem("Lớp Học", '1', <BookOutlined /> , [
     getItem(<Link href='/teacher'>Lớp Học Của Tôi</Link>, '3'),
-    getItem(<Link href='/teacher/add-course'>Thêm Mới Lớp Học</Link>, '4'),
+    getItem(<Link href='/teacher/add-class'>Thêm Mới Lớp Học</Link>, '4'),
   ]),
-  getItem('Tài Liệu', '2', <DesktopOutlined />),
-  getItem('Blog', '7', <DesktopOutlined />),
-  getItem('Tài Khoản', '8', <UserOutlined />, [
-    getItem('Tài Khoản Của Tôi', '9'),
-    getItem(<Link href='/'>Đăng Xuất</Link>, '10'),
-  ]),
+  getItem(<Link href='/teacher/document'>Tài Liệu</Link>, '5', <FileOutlined />),
+  getItem(<Link href='/teacher/blog'>Bài Viết</Link>, '6', <EditOutlined />),
 ];
 
 const TeacherLayout = (
@@ -67,7 +63,7 @@ const TeacherLayout = (
                 <Logo></Logo>
               </Link>
               <div className='ml-5 flex flex-grow font-bold'>{title}</div>
-              <SwitchMode></SwitchMode>
+              <AfterTeacherLogin></AfterTeacherLogin>
             </div>
           </Header>
           <Content

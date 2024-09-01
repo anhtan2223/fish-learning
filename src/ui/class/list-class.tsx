@@ -1,9 +1,10 @@
 'use client'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import Course from "@/ui/course/course";
-import { pageSizeOptions } from '@/config/pagination.config';
+import ClassElement from './class-element';
+import { pageSizeOptions } from '@config/pagination.config';
+import React from 'react';
 
-export default function ListCourse() {
+export default function ListClass() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -13,8 +14,8 @@ export default function ListCourse() {
     return (
         <div className="flex justify-around flex-wrap">
             {Array.from({ length: pageSize }).map((_, index) => (
-                <div key={index} onClick={ () => router.push("/course") } className='pointer transform hover:scale-110 transition-transform'>
-                    <Course></Course>
+                <div key={index} onClick={ () => router.push("/class") } className='pointer transform hover:scale-110 transition-transform'>
+                    <ClassElement></ClassElement>
                 </div>
             ))}
         </div>

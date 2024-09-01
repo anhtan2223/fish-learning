@@ -8,10 +8,10 @@ import { isLoginAtom } from '@storage';
 
 const user = {
     name: "User Name",
-    role: "Role"
+    role: "Teacher"
 }
 
-export default function AfterLogin() {
+export default function AfterTeacherLogin() {
     const setLogin = useSetAtom(isLoginAtom)
     const logout = () => {
         setLogin(value => !value)
@@ -22,17 +22,10 @@ export default function AfterLogin() {
                 <UserOutlined style={{ fontSize: '20px' }} />
                 Tài Khoản Của Tôi
             </Link>
-
-            <Link href='/account/class' className='flex gap-3 py-2 hover:text-primary cursor-pointer transition-colors'>
-                <BookOutlined style={{ fontSize: '20px' }} />
-                Lớp Học Của Tôi
-            </Link>
-
-            <Link href='/accout/blog' className='flex gap-3 py-2 hover:text-primary cursor-pointer transition-colors'>
+            <Link href='/teacher/blog' className='flex gap-3 py-2 hover:text-primary cursor-pointer transition-colors'>
                 <FormOutlined style={{ fontSize: '20px' }} />
                 Bài Đăng Của Tôi
             </Link>
-            
             <div>
                 <hr />
             </div>

@@ -11,10 +11,10 @@ import { useTheme } from 'next-themes';
 import Logo from '@/ui/common/logo';
 
 const info = [
-    { name: "Bài Học", href: "/" },
+    { name: "Lớp Học", href: "/" },
     { name: "Tài Liệu", href: "/document" },
-    { name: "Blog", href: "/blog" },
-    { name: "Bài Học", href: "/test" },
+    { name: "Bài Viết", href: "/blog" },
+    { name: "Liên Hệ", href: "/contact" },
 ]
 
 export default function Header() {
@@ -41,7 +41,7 @@ export default function Header() {
                     {info.map(i => {
                         return <Link href={i.href} key={i.name} className={
                             clsx(
-                                'w-fit h-full py-2 px-4 items-center justify-center hover:bg-secondary dark:hover:bg-secondary-dark',
+                                'w-1/12 h-full py-2 px-4 flex items-center justify-center hover:bg-secondary dark:hover:bg-secondary-dark',
                                 (path == i.href) && 'bg-secondary dark:bg-secondary-dark'
                             )
                         }>
