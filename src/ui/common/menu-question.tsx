@@ -1,9 +1,10 @@
 'use client'
 import { MenuOutlined } from '@ant-design/icons';
-import { FloatButton, Drawer, Button } from 'antd';
+import { FloatButton, Drawer, Button, Space, Typography } from 'antd';
 import Link from 'next/link';
 import { useState } from 'react';
 
+const { Title } = Typography;
 
 export default function MenuQuestion({ number = 4 }: {
     number?: number
@@ -22,26 +23,29 @@ export default function MenuQuestion({ number = 4 }: {
         </Button>
     ));
 
-    return <>
-        <FloatButton icon={<MenuOutlined />} onClick={showDrawer} />
-        <Drawer
-            title="Danh Sách Câu Hỏi"
-            placement="right"
-            closable={true}
-            onClose={onClose}
-            open={open}
-            key="drawer"
-            className='relative'
-        >
-            <div className='flex flex-grow'>
-                {items}
-            </div>
-            <div className='absolute bottom-[24px] right-[24px]'>
-                <Link href="/test">
-                    <Button>Kết Thúc Bài Kiểm Tra</Button>
-                </Link>
-            </div>
-        </Drawer>
-
-    </>
+    return (
+        <>
+            <FloatButton icon={<MenuOutlined />} onClick={showDrawer} />
+            <Drawer
+                title={<Title level={4}>Danh Sách Câu Hỏi</Title>}
+                placement="right"
+                closable={true}
+                onClose={onClose}
+                open={open}
+                key="drawer"
+                width={300}
+            >
+                <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                    <div className='flex flex-wrap justify-center'>
+                        {items}
+                    </div>
+                    <div className='text-center'>
+                        <Link href="/test">
+                            <Button type="primary" size="large">Kết Thúc Bài Kiểm Tra</Button>
+                        </Link>
+                    </div>
+                </Space>
+            </Drawer>
+        </>
+    );
 }

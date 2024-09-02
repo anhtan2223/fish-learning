@@ -1,4 +1,4 @@
-import TeacherListCourse from "@/ui/teacher/list-course";
+import TeacherListCourse from "@/ui/teacher/list-class";
 import MyPagination from "@/ui/common/pagination";
 import TeacherSearchBar from "@/ui/teacher/search-bar";
 

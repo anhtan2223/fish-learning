@@ -1,6 +1,6 @@
 'use client'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import ClassElement from './class-element';
+import  ClassElement  from './class-element';
 import { pageSizeOptions } from '@config/pagination.config';
 import React from 'react';
 

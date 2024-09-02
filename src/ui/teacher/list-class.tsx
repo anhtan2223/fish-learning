@@ -3,7 +3,7 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import ClassElement from '../class/class-element';
 import { pageSizeOptions } from '@/config/pagination.config';
 
-export default function TeacherListclass() {
+export default function TeacherListClass() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -13,7 +13,7 @@ export default function TeacherListclass() {
     return (
         <div className="flex justify-around flex-wrap">
             {Array.from({ length: pageSize }).map((_, index) => (
-                <div key={index} onClick={ () => router.push("/class") } className='pointer transform hover:scale-110 transition-transform'>
+                <div key={index} onClick={ () => router.push("/teacher/class") } className='pointer transform hover:scale-110 transition-transform'>
                     <ClassElement></ClassElement>
                 </div>
             ))}

@@ -1,74 +1,118 @@
-'use client'
-import Tiptap from "@/ui/common/rich-text-editor";
-import { Button, Select } from "antd";
+"use client";
+import { Button, Select, Form, Input } from "antd";
 import Link from "next/link";
-import { Input } from "antd";
+import {
+  UserOutlined,
+  CalendarOutlined,
+  BookOutlined,
+  TeamOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
 
 const { TextArea } = Input;
 
-
 export default function AddCourse() {
-    return (
-        <div>
-            <div className="flex flex-col w-full gap-5">
-                <div className="flex text-xl font-bold justify-start ">Thêm Mới Lớp Học</div>
-                <div className="flex w-full">
-                    <div className="w-[120px] font-semibold flex justify-start" >
-                        Giảng Viên
-                    </div>
-                    <div className="">
-                        Nguyễn Văn A
-                    </div>
-                </div>
-                <div className="flex w-full">
-                    <div className="w-[120px] font-semibold flex justify-start" >
-                        Niên Khoá
-                    </div>
-                    <div className="">
-                        <Select
-                            // popupMatchSelectWidth={true}
-                            defaultValue="jack"
-                            options={[
-                                { value: 'jack', label: 'HK1 Năm 2024-2025' },
-                                { value: 'lucy', label: 'HK2 Năm 2024-2025' },
-                                { value: 'Yiminghe', label: 'HK3 Năm 2024-2025' },
-                            ]}
-                        />
-                    </div>
-                </div>
+  const [form] = Form.useForm();
 
-                <div className="flex w-full">
-                    <div className="w-[120px] font-semibold flex justify-start" >
-                        Tên Lớp
-                    </div>
-                    <div className="">
-                        <Input></Input>
-                    </div>
-                </div>
+  const onFinish = (values: any) => {
+    console.log("Form values:", values);
+    // Handle form submission
+  };
 
-                <div className="flex w-full">
-                    <div className="w-[120px] font-semibold flex justify-start" >
-                        Ghi Chú
-                    </div>
-                    <div className="w-full">
-                    <TextArea
-                        placeholder="Nhập ghi chú cho lớp học"
-                        autoSize={{ minRows: 3, maxRows: 6 }}
-                        className="w-full mx-3"
-                    />
-                    </div>
-                </div>
+  return (
+    <div className="max-w-2xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8 text-center text-blue-600 dark:text-blue-200">
+        <BookOutlined className="mr-2" />
+        Thêm Mới Lớp Học
+      </h1>
+      <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form.Item
+          label={
+            <span className="">
+              <UserOutlined className="mr-2" />
+              Giảng Viên
+            </span>
+          }
+          name="teacher"
+        >
+          <Input disabled defaultValue="Nguyễn Văn A" className="bg-gray-100" />
+        </Form.Item>
+        <Form.Item
+          label={
+            <span className="">
+              <CalendarOutlined className="mr-2" />
+              Niên Khoá
+            </span>
+          }
+          name="semester"
+          rules={[{ required: true, message: "Vui lòng chọn niên khoá" }]}
+        >
+          <Select
+            placeholder="Chọn niên khoá"
+            options={[
+              { value: "HK1_2024-2025", label: "HK1 Năm 2024-2025" },
+              { value: "HK2_2024-2025", label: "HK2 Năm 2024-2025" },
+              { value: "HK3_2024-2025", label: "HK3 Năm 2024-2025" },
+            ]}
+            className="text-blue-600"
+          />
+        </Form.Item>
+        <Form.Item
+          label={
+            <span className="">
+              <BookOutlined className="mr-2" />
+              Tên Lớp
+            </span>
+          }
+          name="className"
+          rules={[{ required: true, message: "Vui lòng nhập tên lớp" }]}
+        >
+          <Input
+            placeholder="Nhập tên lớp"
+            className="border-blue-300 focus:border-blue-500"
+          />
+        </Form.Item>
+        <Form.Item
+          label={
+            <span className="">
+              <TeamOutlined className="mr-2" />
+              Mã Nhóm
+            </span>
+          }
+          name="groupCode"
+          rules={[{ required: true, message: "Vui lòng nhập mã nhóm" }]}
+        >
+          <Input
+            placeholder="Nhập mã nhóm"
+            className="border-blue-300 focus:border-blue-500"
+          />
+        </Form.Item>
+        <Form.Item
+          label={
+            <span className="">
+              <FileTextOutlined className="mr-2" />
+              Ghi Chú
+            </span>
+          }
+          name="note"
+        >
+          <TextArea
+            placeholder="Nhập ghi chú cho lớp học"
+            autoSize={{ minRows: 3, maxRows: 6 }}
+            className="border-blue-300 focus:border-blue-500"
+          />
+        </Form.Item>
+        <Form.Item className="flex w-full justify-around gap-4 mt-4">
+          <Button type="default" htmlType="submit" className="mx-5">
+            Tạo Mới
+          </Button>
 
-                <div className="flex w-full justify-center gap-5">
-                    <Link href="/teacher/course/id">
-                        <Button ghost type="primary">Tạo Mới</Button>
-                    </Link>
-                    <Link href="/teacher">
-                        <Button danger ghost>Quay Lại</Button>
-                    </Link>
-                </div>
-            </div>
 
-        </div>
-    );
+          <Link href="/teacher">
+            <Button danger className="mx-5">Quay Lại</Button>
+          </Link>
+        </Form.Item>
+      </Form>
+    </div>
+  );
 }
