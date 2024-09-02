@@ -87,7 +87,7 @@ export default function Assignment() {
                         extra={<FileTextOutlined className="text-2xl text-blue-500" />}
                     >
                         <Paragraph>
-                            Đọc file dữ liệu "baitap1.csv" và hiển thị 5 dòng đầu tiên của dữ liệu.
+                            Đọc file dữ liệu baitap1.csv và hiển thị 5 dòng đầu tiên của dữ liệu.
                         </Paragraph>
                         <Paragraph type="secondary" className="text-sm">
                             <InfoCircleOutlined className="mr-1" /> Gợi ý: Sử dụng thư viện pandas để đọc file CSV và hiển thị dữ liệu.
