@@ -1,21 +1,23 @@
+'use client'
+import React from 'react';
 import SearchClassBar from "@/ui/class/search-bar";
 import MyPagination from "@/ui/common/pagination";
 import ListClass from "@/ui/class/list-class";
+import { Typography } from "antd";
 
-export default function classPage() {
-    return (
-        <div>
-            <div className='mb-5 text-lg font-bold flex items-center'>
-                <p>Lớp Học</p>
-                <div className="flex flex-grow justify-end">
-                    <SearchClassBar></SearchClassBar>
-                </div>
-            </div>
-            <ListClass></ListClass>
-            <div className="flex w-full justify-end">
-                <MyPagination className="" total={100}></MyPagination>
-            </div>
+const { Title, Paragraph } = Typography;
 
-        </div>
-    );
+export default function ClassPage() {
+  return (
+    <div className="p-6">
+      <Title level={2}>Lớp Học</Title>
+      <SearchClassBar></SearchClassBar>
+      <div className="mt-5">
+        <ListClass></ListClass>
+      </div>
+      <div className="mt-5 flex justify-end">
+        <MyPagination total={100}></MyPagination>
+      </div>
+    </div>
+  );
 }

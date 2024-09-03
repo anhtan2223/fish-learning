@@ -1,12 +1,8 @@
-import { Button } from "antd";
-import Link from 'next/link'
 import SortComponent from "@ui/common/sort";
 import MySearch from "@ui/common/search";
 import React from "react";
 
-export default function SearchClassBar({ isAdd = false }: {
-    isAdd?: boolean
-}) {
+export default function SearchClassBar() {
     const sortOtp = [
         // { label: 'Mặc định', value: 'default' },
         { label: 'Niên Khoá', value: 'default' },
@@ -14,21 +10,15 @@ export default function SearchClassBar({ isAdd = false }: {
     ]
     return (
         <div className='flex h-[32px]'>
-            <div className="flex mr-3 justify-end items-center w-4/12">
+            <MySearch
+                placeholder="Tìm Kiếm Lớp Học"
+                className='w-3/12 mr-5'
+            />
+            <div className="flex mr-3 justify-end items-center">
                 <div className="flex items-center">
                     <SortComponent options={sortOtp} />
                 </div>
             </div>
-            <MySearch
-                placeholder="Tìm Kiếm Lớp Học"
-                className='w-8/12'
-            />
-            {
-                isAdd && <Link href='/baidang/vieclam'>
-                    <Button className="mx-3" type="primary">Tạo Mới</Button>
-                </Link>
-            }
-
         </div>
     )
 }

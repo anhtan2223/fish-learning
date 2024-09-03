@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SwitchMode from '@/ui/common/switch-mode';
 import { useSetAtom } from 'jotai';
 import { isLoginAtom } from '@storage';
+import { useRouter } from 'next/navigation';
 
 const user = {
     name: "User Name",
@@ -13,8 +14,10 @@ const user = {
 
 export default function AfterTeacherLogin() {
     const setLogin = useSetAtom(isLoginAtom)
+    const router = useRouter()
     const logout = () => {
         setLogin(value => !value)
+        router.push('/')
     }
     function ChangePage() {
         return <div className=''>

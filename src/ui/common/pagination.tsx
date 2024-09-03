@@ -42,12 +42,13 @@ export default function MyPagination(
         current={currentPage}
         total={total}
         showQuickJumper
-        size='small' 
         showLessItems
         onChange={handlePageChange}
         showSizeChanger={true}
         pageSize={pageSize}
         pageSizeOptions={pageSizeOptions}
+        showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+        responsive={true}
       />
     </div>
   );

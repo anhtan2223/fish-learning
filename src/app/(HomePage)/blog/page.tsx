@@ -113,7 +113,7 @@ export default function BlogPage() {
 
     return (
         <div className="p-6">
-            <Title level={2}>Blog Posts</Title>
+            <Title level={2}>Bài Viết</Title>
             <Space className="mb-4" direction="vertical" style={{ width: '100%' }}>
                 <Space>
                     <Search

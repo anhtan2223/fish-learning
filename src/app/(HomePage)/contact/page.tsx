@@ -20,7 +20,7 @@ export default function ContactPage() {
 
   return (
     <div className="p-6 flex flex-col justify-center">
-      <Title level={1}>Thông Tin Liên Hệ</Title>
+      <Title level={2}>Thông Tin Liên Hệ</Title>
 
       <Space direction="vertical" size="large" className="w-full justify-center">
         <Space className="h-full flex items-center">

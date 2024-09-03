@@ -9,8 +9,7 @@ import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
 import Link from 'next/link';
 import Logo from '@/ui/common/logo';
-import AfterTeacherLogin from '../common/after-teacher-login';
-
+import AfterTeacherLogin from '@/ui/common/after-teacher-login';
 
 const { Header, Content, Sider } = Layout;
 
