@@ -1,27 +1,31 @@
 'use client'
-
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Button, Tooltip, Switch } from 'antd'
-import { useState } from 'react'
+import { Button, Tooltip } from 'antd'
 import { 
   BoldOutlined, 
   ItalicOutlined, 
   StrikethroughOutlined, 
   OrderedListOutlined, 
-  UnorderedListOutlined,
-  EditOutlined,
-  EyeOutlined
+  UnorderedListOutlined
 } from '@ant-design/icons'
 
-const RichTextEditor = () => {
-  const [content, setContent] = useState('<p>Start typing here...</p>')
-  
+const RichTextEditor = (
+  {
+    content,
+    onChange = () => {},
+    isEditor = true
+  }: {
+    content: string,
+    onChange?: (content: string) => void ,
+    isEditor?: boolean
+  }
+) => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: content,
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML())
+      onChange(editor.getHTML())
     },
   })
 
@@ -31,7 +35,8 @@ const RichTextEditor = () => {
 
   return (
     <div className="rich-text-editor dark:bg-dark">
-      <div className="menu-bar flex items-center justify-between mb-2">
+      {!isEditor ? <>
+        <div className="menu-bar flex items-center justify-between mb-2">
         <div>
           <Tooltip title="Heading 1">
             <Button
@@ -97,16 +102,15 @@ const RichTextEditor = () => {
       <div className='border border-gray-300 rounded-md p-2'>
         <EditorContent editor={editor} />
       </div>
-      {/* Preview */}
-      {/* <div className="mt-4">
-        <h3>Output HTML:</h3>
-        <pre className="bg-gray-100 p-2 rounded">{content}</pre>
-        <h3>Preview:</h3>
-        <div 
-          className="rich-text-editor ProseMirror bg-white dark:bg-dark p-2 rounded border border-gray-300"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      </div> */}
+      </> : <>
+        <div className="mt-4">
+          <div 
+            className="rich-text-editor ProseMirror"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </div>
+      </> }
+      
     </div>
   )
 }

@@ -91,8 +91,7 @@ KNN có nhiều ứng dụng trong thực tế:
                     <Title level={4}><FormOutlined /> Bài kiểm tra</Title>
                     <Space>
                       {session.quiz.map((q, index) => (
-                        // <Link key={index} href={`/assignment/${q.id}`}>
-                        <Link key={index} href={`/assignment`}>
+                        <Link key={index} href={`/assignment/${q.id}`}>
                           <Button>
                             Bài {index + 1}
                           </Button>
