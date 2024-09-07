@@ -70,7 +70,6 @@ export default function TestResult() {
 
     return (
         <div className="max-w-6xl mx-auto p-4">
-            <MenuQuestion />
             <Card className="mt-4 shadow-md">
                 <Space direction="vertical" size="large" className="w-full">
                     <Title level={2}>Kết Quả Bài Kiểm Tra</Title>
