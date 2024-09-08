@@ -7,8 +7,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 const { Title, Text } = Typography;
 
-export default function MenuQuestion({ number = 20}: {
-    number?: number
+export default function MenuQuestion({ number = 20 , assignmentId}: {  
+    number?: number,
+    assignmentId : string
 }) {
     const [open, setOpen] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -31,7 +32,7 @@ export default function MenuQuestion({ number = 20}: {
     };
 
     const handleQuestionClick = (index: number) => {
-        router.push(`/assignment/1?question=${index + 1}`, { scroll: false });
+        router.push(`/assignment/${assignmentId}/doing?question=${index + 1}`, { scroll: false });
         onClose();
     };
 
