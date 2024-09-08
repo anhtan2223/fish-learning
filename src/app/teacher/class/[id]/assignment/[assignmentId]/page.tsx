@@ -32,14 +32,17 @@ import {
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import { ColumnType } from "antd/es/table";
+import dayjs from 'dayjs';
 
 const { Title, Paragraph } = Typography;
 const { confirm } = Modal;
+const { RangePicker } = DatePicker;
 
 interface Assignment {
   id: number;
   title: string;
   description: string;
+  startDate: string;
   dueDate: string;
   totalPoints: number;
   status: string;
@@ -63,9 +66,7 @@ export default function AssignmentDashboardPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
-  const [editedDueDate, setEditedDueDate] = useState<moment.Moment | null>(
-    null
-  );
+  const [editedDateRange, setEditedDateRange] = useState<[dayjs.Dayjs, dayjs.Dayjs] | null>(null);
   const [editedTotalPoints, setEditedTotalPoints] = useState<number>(0);
 
   useEffect(() => {
@@ -79,6 +80,7 @@ export default function AssignmentDashboardPage() {
           id: 1,
           title: "Triển khai Thuật toán KNN",
           description: "Triển khai thuật toán K-Nearest Neighbors từ đầu.",
+          startDate: "2023-07-01T00:00:00",
           dueDate: "2023-07-15T23:59:59",
           totalPoints: 100,
           status: "Đang hoạt động",
@@ -124,7 +126,7 @@ export default function AssignmentDashboardPage() {
     if (assignment) {
       setEditedTitle(assignment.title);
       setEditedDescription(assignment.description);
-      setEditedDueDate(moment(assignment.dueDate));
+      setEditedDateRange([dayjs(assignment.startDate), dayjs(assignment.dueDate)]);
       setEditedTotalPoints(assignment.totalPoints);
     }
   }, [assignment]);
@@ -138,12 +140,13 @@ export default function AssignmentDashboardPage() {
   };
 
   const handleSave = () => {
-    if (assignment && editedDueDate) {
+    if (assignment && editedDateRange) {
       setAssignment({
         ...assignment,
         title: editedTitle,
         description: editedDescription,
-        dueDate: editedDueDate.format("YYYY-MM-DDTHH:mm:ss"),
+        startDate: editedDateRange[0].format("YYYY-MM-DDTHH:mm:ss"),
+        dueDate: editedDateRange[1].format("YYYY-MM-DDTHH:mm:ss"),
         totalPoints: editedTotalPoints,
       });
       setIsEditing(false);
@@ -155,7 +158,7 @@ export default function AssignmentDashboardPage() {
     setIsEditing(false);
     setEditedTitle(assignment?.title || "");
     setEditedDescription(assignment?.description || "");
-    setEditedDueDate(assignment ? moment(assignment.dueDate) : null);
+    setEditedDateRange(assignment ? [dayjs(assignment.startDate), dayjs(assignment.dueDate)] : null);
     setEditedTotalPoints(assignment?.totalPoints || 0);
   };
 
@@ -303,11 +306,11 @@ export default function AssignmentDashboardPage() {
                 style={{ marginBottom: "10px" }}
                 rows={4}
               />
-              <DatePicker
+              <RangePicker
                 showTime
                 format="DD/MM/YYYY HH:mm"
-                value={editedDueDate}
-                onChange={(date) => setEditedDueDate(date)}
+                value={editedDateRange}
+                onChange={(dates) => setEditedDateRange(dates as [dayjs.Dayjs, dayjs.Dayjs])}
                 style={{ marginBottom: "10px", marginRight: "10px" }}
               />
               <Space>
@@ -326,10 +329,15 @@ export default function AssignmentDashboardPage() {
               <Title level={2}>{assignment.title}</Title>
               <Paragraph>{assignment.description}</Paragraph>
               <Descriptions bordered>
-                <Descriptions.Item label="Hạn nộp">
+                <Descriptions.Item label="Thời gian bắt đầu">
+                  {moment(assignment.startDate).isValid()
+                    ? moment(assignment.startDate).format("DD/MM/YYYY HH:mm")
+                    : "Không có thời gian bắt đầu"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Thời hạn nộp">
                   {moment(assignment.dueDate).isValid()
                     ? moment(assignment.dueDate).format("DD/MM/YYYY HH:mm")
-                    : "Không Có Hạn Nộp"}
+                    : "Không có thời hạn nộp"}
                 </Descriptions.Item>
                 <Descriptions.Item label="Tổng điểm">
                   {assignment.totalPoints}

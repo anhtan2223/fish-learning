@@ -85,7 +85,11 @@ export default function ClassSettingPage() {
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <Button 
+      
+      <Row gutter={[24, 24]} justify="center">
+        
+        <Col xs={24} lg={20}>
+        <Button 
         icon={<ArrowLeftOutlined />} 
         onClick={goBack}
         style={{ marginBottom: '20px' }}
@@ -93,8 +97,6 @@ export default function ClassSettingPage() {
       >
         Quay lại
       </Button>
-      <Row gutter={[24, 24]} justify="center">
-        <Col xs={24} lg={20}>
           <Card className="shadow-lg rounded-lg">
             <div className="text-center mb-8">
               <Title level={2}>
