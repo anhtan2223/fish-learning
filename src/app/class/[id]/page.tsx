@@ -1,118 +1,140 @@
 'use client'
-import { useState } from 'react';
-import { Typography, Tabs, Card, Button, Space } from 'antd';
+import { useState, useEffect } from 'react';
+import { Typography, Tabs, Card, Button, Space, Row, Col, Divider, List } from 'antd';
 import { BookOutlined, FormOutlined, FileTextOutlined } from '@ant-design/icons';
-import ReactMarkdown from 'react-markdown';
+import RichTextEditor from '@/ui/common/rich-text-editor';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
+interface Quiz {
+  id: number;
+  name: string;
+}
+
+interface Document {
+  name: string;
+  url: string;
+}
+
+interface Session {
+  key: string;
+  title: string;
+  content: string;
+  quiz: Quiz[];
+  documents: Document[];
+}
+
 export default function ClassPage() {
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [activeTab, setActiveTab] = useState('1');
+  const router = useRouter();
 
-  const sessions = [
-    {
-      key: '1',
-      title: 'Giới thiệu về KNN',
-      content: `
-# Giới thiệu về KNN
+  useEffect(() => {
+    // Fetch sessions data from API
+    // For now, we'll use mock data
+    setSessions([
+      {
+        key: '1',
+        title: 'Giới thiệu về KNN',
+        content: '<h1>Giới thiệu về KNN</h1><p>KNN (K-Nearest Neighbors) là một thuật toán học máy được sử dụng trong phân loại và hồi quy. Nó dựa trên nguyên tắc rằng các điểm dữ liệu gần nhau có xu hướng thuộc cùng một lớp.</p><h2>Nguyên lý hoạt động</h2><p>KNN hoạt động bằng cách:</p><ul><li>Tính khoảng cách từ điểm cần dự đoán đến tất cả các điểm trong tập huấn luyện</li><li>Chọn K điểm gần nhất</li><li>Dự đoán dựa trên đa số trong K điểm đó</li></ul>',
+        quiz: [
+          { id: 1, name: 'Bài tập 1'},
+          { id: 2, name: 'Kiểm tra 15 phút'},
+          { id: 3, name: 'Kiểm tra Cuối Kỳ'},
+        ],
+        documents: [
+          { name: 'KNN Overview.pdf', url: '/documents/knn_overview.pdf' },
+          { name: 'KNN in Practice.pdf', url: '/documents/knn_in_practice.pdf' },
+          { name: 'KNN vs Other Algorithms.pdf', url: '/documents/knn_comparison.pdf' },
+        ],
+      },
+      {
+        key: '2',
+        title: 'Ứng dụng của KNN',
+        content: '<h1>Ứng dụng của KNN</h1><p>KNN có nhiều ứng dụng trong thực tế:</p><ul><li>Hệ thống gợi ý</li><li>Nhận dạng chữ viết tay</li><li>Phân tích tài chính</li><li>Chẩn đoán y tế</li><li>Nhận dạng khuôn mặt</li></ul>',
+        quiz: [
+          { id: 4, name: 'Bài tập 2'},
+          { id: 5, name: 'Kiểm tra 15 phút'},
+          { id: 6, name: 'Kiểm tra Cuối Kỳ'},
+        ],
+        documents: [
+          { name: 'KNN Applications.pdf', url: '/documents/knn_applications.pdf' },
+          { name: 'Case Studies.pdf', url: '/documents/case_studies.pdf' },
+        ],
+      },
+    ]);
+  }, []);
 
-KNN (K-Nearest Neighbors) là một thuật toán học máy đơn giản và hiệu quả được sử dụng cho cả bài toán phân loại và hồi quy.
+  const navigateToQuizEdit = (quizId: number) => {
+    router.push(`/assignment/${quizId}`);
+  };
 
-## Nguyên lý hoạt động
-
-1. Chọn số K (số lượng láng giềng gần nhất)
-2. Tính khoảng cách từ điểm cần dự đoán đến tất cả các điểm trong tập dữ liệu
-3. Chọn K điểm có khoảng cách gần nhất
-4. Đối với bài toán phân loại: lấy nhãn xuất hiện nhiều nhất trong K điểm
-5. Đối với bài toán hồi quy: lấy giá trị trung bình của K điểm
-
-## Ưu điểm và nhược điểm
-
-### Ưu điểm:
-- Đơn giản, dễ hiểu
-- Không cần huấn luyện mô hình
-
-### Nhược điểm:
-- Chậm khi dự đoán với tập dữ liệu lớn
-- Nhạy cảm với dữ liệu nhiễu
-      `,
-      quiz: [
-        { id: 1, question: 'KNN là viết tắt của gì?' },
-        { id: 2, question: 'KNN có thể được sử dụng cho bài toán nào?' },
-      ],
-      documents: [
-        { name: 'KNN Overview.pdf', url: '/documents/knn_overview.pdf' },
-        { name: 'KNN in Practice.pdf', url: '/documents/knn_in_practice.pdf' },
-      ],
-    },
-    {
-      key: '2',
-      title: 'Ứng dụng của KNN',
-      content: `
-# Ứng dụng của KNN
-
-KNN có nhiều ứng dụng trong thực tế:
-
-1. **Hệ thống gợi ý**: Đề xuất sản phẩm dựa trên sở thích của người dùng tương tự.
-
-2. **Nhận dạng chữ viết tay**: Phân loại các ký tự dựa trên sự tương đồng với các mẫu đã biết.
-
-3. **Phân tích tài chính**: Dự đoán xu hướng giá cổ phiếu dựa trên các mẫu lịch sử tương tự.
-
-4. **Chẩn đoán y tế**: Phân loại các bệnh dựa trên các triệu chứng và so sánh với các ca bệnh đã biết.
-
-5. **Nhận dạng khuôn mặt**: So sánh đặc trưng khuôn mặt với cơ sở dữ liệu để nhận dạng cá nhân.
-      `,
-      documents: [
-        { name: 'KNN Applications.pdf', url: '/documents/knn_applications.pdf' },
-        { name: 'Case Studies.pdf', url: '/documents/case_studies.pdf' },
-      ],
-    },
-  ];
+  const navigateToDocumentEdit = (documentUrl: string) => {
+    window.open(documentUrl, '_blank');
+  };
 
   return (
     <div className="class-page">
-      <Title level={2} className="text-center mb-8">Phương Pháp K Láng Giềng (KNN)</Title>
-      
-      <Tabs activeKey={activeTab} onChange={setActiveTab}>
+      <Row justify="space-between" align="middle" className="mb-8">
+        <Col>
+          <Title level={2}>Phương Pháp K Láng Giềng (KNN)</Title>
+        </Col>
+      </Row>
+
+      <Tabs 
+        activeKey={activeTab} 
+        onChange={setActiveTab}
+        type="card"
+      >
         {sessions.map(session => (
           <TabPane tab={session.title} key={session.key}>
             <Card>
               <Space direction="vertical" size="large" style={{ width: '100%' }}>
                 <div>
-                  <Title level={4}><BookOutlined /> Nội dung</Title>
-                  <ReactMarkdown>{session.content}</ReactMarkdown>
+                  <Title level={4}><BookOutlined /> {session.title}</Title>
+                  <Divider />
+                  <RichTextEditor content={session.content} onChange={() => {}} isEditor={false} />
                 </div>
                 
-                {session.quiz && (
-                  <div>
-                    <Title level={4}><FormOutlined /> Bài kiểm tra</Title>
-                    <Space>
-                      {session.quiz.map((q, index) => (
-                        <Link key={index} href={`/assignment/${q.id}`}>
-                          <Button>
-                            Bài {index + 1}
-                          </Button>
-                        </Link>
-                      ))}
-                    </Space>
-                  </div>
-                )}
-                
-                {session.documents && (
-                  <div>
-                    <Title level={4}><FileTextOutlined /> Tài liệu</Title>
-                    <Space>
-                      {session.documents.map((doc, index) => (
-                        <Button key={index} href={doc.url} target="_blank">
-                          {doc.name}
-                        </Button>
-                      ))}
-                    </Space>
-                  </div>
-                )}
+                <Row gutter={16}>
+                  <Col span={12}>
+                    {session.quiz && session.quiz.length > 0 && (
+                      <div>
+                        <Title level={4}><FormOutlined /> Bài Tập và Câu Hỏi</Title>
+                        <List
+                          dataSource={session.quiz}
+                          renderItem={(item) => (
+                            <List.Item>
+                              <List.Item.Meta
+                                title={<a onClick={() => navigateToQuizEdit(item.id)}>{item.name}</a>}
+                              />
+                            </List.Item>
+                          )}
+                        />
+                      </div>
+                    )}
+                  </Col>
+                  <Col span={12}>
+                    {session.documents && session.documents.length > 0 && (
+                      <div>
+                        <Title level={4}><FileTextOutlined /> Tài Liệu</Title>
+                        <List
+                          dataSource={session.documents}
+                          renderItem={(item) => (
+                            <List.Item>
+                              <List.Item.Meta
+                                title={<a onClick={() => navigateToDocumentEdit(item.url)}>{item.name}</a>}
+                              />
+                            </List.Item>
+                          )}
+                        />
+                      </div>
+                    )}
+                  </Col>
+                </Row>
               </Space>
             </Card>
           </TabPane>

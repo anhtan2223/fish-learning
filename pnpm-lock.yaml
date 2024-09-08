@@ -13,7 +13,7 @@ importers:
         version: 5.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ant-design/nextjs-registry':
         specifier: ^1.0.0
-        version: 1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.3(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@monaco-editor/react':
         specifier: ^4.6.0
         version: 4.6.0(monaco-editor@0.51.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -40,7 +40,7 @@ importers:
         version: 2.6.6
       antd:
         specifier: ^5.19.4
-        version: 5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.20.3(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -50,6 +50,9 @@ importers:
       jotai:
         specifier: ^2.9.1
         version: 2.9.3(@types/react@18.3.5)(react@18.3.1)
+      moment:
+        specifier: ^2.30.1
+        version: 2.30.1
       next:
         specifier: 14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1724,6 +1727,9 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
+  moment@2.30.1:
+    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
+
   monaco-editor@0.51.0:
     resolution: {integrity: sha512-xaGwVV1fq343cM7aOYB6lVE4Ugf0UyimdD/x5PWcWBMKENwectaEu77FAN7c5sFiyumqeJdX1RPTh1ocioyDjw==}
 
@@ -2692,10 +2698,10 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ant-design/nextjs-registry@1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@ant-design/nextjs-registry@1.0.1(@ant-design/cssinjs@1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(antd@5.20.3(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ant-design/cssinjs': 1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      antd: 5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      antd: 5.20.3(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -3278,7 +3284,7 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
-  antd@5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  antd@5.20.3(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/colors': 7.1.0
       '@ant-design/cssinjs': 1.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3310,7 +3316,7 @@ snapshots:
       rc-motion: 2.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-notification: 5.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-pagination: 4.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rc-picker: 4.6.14(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rc-picker: 4.6.14(dayjs@1.11.13)(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-progress: 4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-rate: 2.13.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-resize-observer: 1.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4651,6 +4657,8 @@ snapshots:
 
   minipass@7.1.2: {}
 
+  moment@2.30.1: {}
+
   monaco-editor@0.51.0: {}
 
   ms@2.1.2: {}
@@ -5121,7 +5129,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  rc-picker@4.6.14(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  rc-picker@4.6.14(dayjs@1.11.13)(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.25.6
       '@rc-component/trigger': 2.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -5133,6 +5141,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       dayjs: 1.11.13
+      moment: 2.30.1
 
   rc-progress@4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

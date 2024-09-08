@@ -35,7 +35,7 @@ const RichTextEditor = (
 
   return (
     <div className="rich-text-editor dark:bg-dark">
-      {!isEditor ? <>
+      {isEditor ? <>
         <div className="menu-bar flex items-center justify-between mb-2">
         <div>
           <Tooltip title="Heading 1">
