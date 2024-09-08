@@ -77,14 +77,14 @@ export default function WaitingRoom() {
                         </Col>
                     </Row>
                     <Divider />
-                    <Card className="bg-blue-50 border-blue-200">
-                        <Paragraph className="text-lg text-gray-700">
+                    <Card className="bg-blue-50 dark:bg-dark border-blue-200 ">
+                        <Paragraph className="text-lg text-gray-700 dark:text-gray-300">
                             Bạn sẽ làm một bài tập gồm {questions.length} câu hỏi về phân tích dữ liệu sử dụng Python và các thư viện như Pandas, Matplotlib.
                         </Paragraph>
-                        <Paragraph strong className="text-lg text-blue-700 mt-4">
+                        <Paragraph strong className="text-base text-blue-700 dark:text-blue-300 mt-4">
                             Lưu ý:
                         </Paragraph>
-                        <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                        <ul className="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-200">
                             <li>Bạn có thể sử dụng tài liệu tham khảo trong quá trình làm bài</li>
                             <li>Đọc kỹ yêu cầu của từng câu hỏi trước khi trả lời</li>
                             <li>Thời gian sẽ được tính từ khi bạn bắt đầu làm bài</li>
