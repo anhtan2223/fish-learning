@@ -2,6 +2,7 @@
 import { Avatar, Popover } from 'antd';
 import { UserOutlined, FormOutlined, LogoutOutlined, EditOutlined, BookOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import SwitchMode from '@/ui/common/switch-mode';
 import { useSetAtom } from 'jotai';
 import { isLoginAtom } from '@storage';
@@ -12,9 +13,11 @@ const user = {
 }
 
 export default function AfterLogin() {
+    const router = useRouter()
     const setLogin = useSetAtom(isLoginAtom)
     const logout = () => {
         setLogin(value => !value)
+        router.push('/')
     }
     function ChangePage() {
         return <div className=''>

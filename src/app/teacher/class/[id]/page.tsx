@@ -228,12 +228,14 @@ export default function EditClassPage() {
     <div className="edit-class-page">
       <Row justify="space-between" align="middle" className="mb-8">
         <Row align="middle" justify="space-between" className="w-fit mt-4">
-          <p className="h-full items-center text-3xl font-bold" >Máy Học Ứng Dụng</p>
+          <p className="h-full items-center text-3xl font-bold">
+            Máy Học Ứng Dụng
+          </p>
           <div
             onClick={navigateToClassroomSettings}
             className="cursor-pointer h-full items-center ml-3"
           >
-            <SettingOutlined style={{ fontSize: '30px' }} />
+            <SettingOutlined style={{ fontSize: "30px" }} />
           </div>
         </Row>
         <Col>

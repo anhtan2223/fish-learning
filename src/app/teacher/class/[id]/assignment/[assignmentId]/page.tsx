@@ -32,7 +32,7 @@ import {
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import { ColumnType } from "antd/es/table";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const { Title, Paragraph } = Typography;
 const { confirm } = Modal;
@@ -66,7 +66,9 @@ export default function AssignmentDashboardPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
-  const [editedDateRange, setEditedDateRange] = useState<[dayjs.Dayjs, dayjs.Dayjs] | null>(null);
+  const [editedDateRange, setEditedDateRange] = useState<
+    [dayjs.Dayjs, dayjs.Dayjs] | null
+  >(null);
   const [editedTotalPoints, setEditedTotalPoints] = useState<number>(0);
 
   useEffect(() => {
@@ -126,7 +128,10 @@ export default function AssignmentDashboardPage() {
     if (assignment) {
       setEditedTitle(assignment.title);
       setEditedDescription(assignment.description);
-      setEditedDateRange([dayjs(assignment.startDate), dayjs(assignment.dueDate)]);
+      setEditedDateRange([
+        dayjs(assignment.startDate),
+        dayjs(assignment.dueDate),
+      ]);
       setEditedTotalPoints(assignment.totalPoints);
     }
   }, [assignment]);
@@ -158,7 +163,11 @@ export default function AssignmentDashboardPage() {
     setIsEditing(false);
     setEditedTitle(assignment?.title || "");
     setEditedDescription(assignment?.description || "");
-    setEditedDateRange(assignment ? [dayjs(assignment.startDate), dayjs(assignment.dueDate)] : null);
+    setEditedDateRange(
+      assignment
+        ? [dayjs(assignment.startDate), dayjs(assignment.dueDate)]
+        : null
+    );
     setEditedTotalPoints(assignment?.totalPoints || 0);
   };
 
@@ -310,7 +319,9 @@ export default function AssignmentDashboardPage() {
                 showTime
                 format="DD/MM/YYYY HH:mm"
                 value={editedDateRange}
-                onChange={(dates) => setEditedDateRange(dates as [dayjs.Dayjs, dayjs.Dayjs])}
+                onChange={(dates) =>
+                  setEditedDateRange(dates as [dayjs.Dayjs, dayjs.Dayjs])
+                }
                 style={{ marginBottom: "10px", marginRight: "10px" }}
               />
               <Space>
