@@ -86,15 +86,18 @@ export default function Page() {
             ],
             correctAnswer: "K-Nearest Neighbors",
             points: 1,
-            explanation: "KNN stands for K-Nearest Neighbors, a popular machine learning algorithm.",
+            explanation:
+              "KNN stands for K-Nearest Neighbors, a popular machine learning algorithm.",
           },
           {
             id: 2,
             type: "code",
-            content: "Viết một hàm Python để tính khoảng cách Euclidean giữa hai điểm.",
+            content:
+              "Viết một hàm Python để tính khoảng cách Euclidean giữa hai điểm.",
             points: 2,
             hint: "Hãy sử dụng công thức khoảng cách Euclidean và hàm math.sqrt().",
-            codeAnswer: "import math\n\ndef euclidean_distance(point1, point2):\n    return math.sqrt(sum((p1 - p2) ** 2 for p1, p2 in zip(point1, point2)))",
+            codeAnswer:
+              "import math\n\ndef euclidean_distance(point1, point2):\n    return math.sqrt(sum((p1 - p2) ** 2 for p1, p2 in zip(point1, point2)))",
           },
         ]);
       } catch (error) {
@@ -129,12 +132,17 @@ export default function Page() {
 
   const handleQuestionChange = (field: string, value: any) => {
     const updatedQuestions = [...questions];
-    updatedQuestions[currentQuestionIndex] = { ...updatedQuestions[currentQuestionIndex], [field]: value };
+    updatedQuestions[currentQuestionIndex] = {
+      ...updatedQuestions[currentQuestionIndex],
+      [field]: value,
+    };
     setQuestions(updatedQuestions);
   };
 
   const handleDeleteQuestion = () => {
-    const updatedQuestions = questions.filter((_, i) => i !== currentQuestionIndex);
+    const updatedQuestions = questions.filter(
+      (_, i) => i !== currentQuestionIndex
+    );
     setQuestions(updatedQuestions);
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -172,10 +180,10 @@ export default function Page() {
   };
 
   const handleImageUpload = (info: any) => {
-    if (info.file.status === 'done') {
+    if (info.file.status === "done") {
       handleQuestionChange("image", info.file.response.url);
       message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
+    } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
@@ -224,7 +232,9 @@ export default function Page() {
               >
                 Thêm câu hỏi
               </Button>
-              <Text>Câu hỏi {currentQuestionIndex + 1}/{questions.length}</Text>
+              <Text>
+                Câu hỏi {currentQuestionIndex + 1}/{questions.length}
+              </Text>
             </Space>
             <Card style={{ marginBottom: 16 }}>
               <Space direction="vertical" style={{ width: "100%" }}>
@@ -235,9 +245,7 @@ export default function Page() {
                   initialValue={currentQuestion.type}
                 >
                   <Select
-                    onChange={(value) =>
-                      handleQuestionChange("type", value)
-                    }
+                    onChange={(value) => handleQuestionChange("type", value)}
                   >
                     <Option value="multiple_choice">Trắc nghiệm</Option>
                     <Option value="code">Câu trả lời bằng Code</Option>
@@ -280,7 +288,11 @@ export default function Page() {
                     onChange={handleImageUpload}
                   >
                     {currentQuestion.image ? (
-                      <img src={currentQuestion.image} alt="question" style={{ width: '100%' }} />
+                      <img
+                        src={currentQuestion.image}
+                        alt="question"
+                        style={{ width: "100%" }}
+                      />
                     ) : (
                       <div>
                         <PlusOutlined />
@@ -296,17 +308,30 @@ export default function Page() {
                   >
                     {(fields, { add, remove }) => (
                       <>
-                        <Form.Item
-                          label="Đáp án"
-                          required
-                        >
-                          <Space direction="vertical" style={{ width: '100%' }}>
+                        <Form.Item label="Đáp án" required>
+                          <Space direction="vertical" style={{ width: "100%" }}>
                             {fields.map((field, index) => (
-                              <Space key={field.key} style={{ display: 'flex', marginBottom: 8, width: '100%' }} align="baseline">
+                              <Space
+                                key={field.key}
+                                style={{
+                                  display: "flex",
+                                  marginBottom: 8,
+                                  width: "100%",
+                                }}
+                                align="baseline"
+                              >
                                 <Radio
                                   value={currentQuestion.options?.[index]}
-                                  checked={currentQuestion.correctAnswer === currentQuestion.options?.[index]}
-                                  onChange={(e) => handleQuestionChange("correctAnswer", e.target.value)}
+                                  checked={
+                                    currentQuestion.correctAnswer ===
+                                    currentQuestion.options?.[index]
+                                  }
+                                  onChange={(e) =>
+                                    handleQuestionChange(
+                                      "correctAnswer",
+                                      e.target.value
+                                    )
+                                  }
                                 >
                                   <Form.Item
                                     {...field}
@@ -315,7 +340,8 @@ export default function Page() {
                                       {
                                         required: true,
                                         whitespace: true,
-                                        message: "Vui lòng nhập lựa chọn hoặc xóa trường này.",
+                                        message:
+                                          "Vui lòng nhập lựa chọn hoặc xóa trường này.",
                                       },
                                     ]}
                                     noStyle
@@ -324,9 +350,14 @@ export default function Page() {
                                       placeholder={`Lựa chọn ${index + 1}`}
                                       style={{ width: 300 }}
                                       onChange={(e) => {
-                                        const newOptions = [...(currentQuestion.options || [])];
+                                        const newOptions = [
+                                          ...(currentQuestion.options || []),
+                                        ];
                                         newOptions[index] = e.target.value;
-                                        handleQuestionChange("options", newOptions);
+                                        handleQuestionChange(
+                                          "options",
+                                          newOptions
+                                        );
                                       }}
                                     />
                                   </Form.Item>
@@ -338,21 +369,37 @@ export default function Page() {
                                   onClick={() => {
                                     if (fields.length > 1) {
                                       remove(field.name);
-                                      const newOptions = [...(currentQuestion.options || [])];
+                                      const newOptions = [
+                                        ...(currentQuestion.options || []),
+                                      ];
                                       newOptions.splice(index, 1);
-                                      handleQuestionChange("options", newOptions);
-                                      if (currentQuestion.correctAnswer === currentQuestion.options?.[index]) {
-                                        handleQuestionChange("correctAnswer", "");
+                                      handleQuestionChange(
+                                        "options",
+                                        newOptions
+                                      );
+                                      if (
+                                        currentQuestion.correctAnswer ===
+                                        currentQuestion.options?.[index]
+                                      ) {
+                                        handleQuestionChange(
+                                          "correctAnswer",
+                                          ""
+                                        );
                                       }
                                     } else {
-                                      message.warning("Phải có ít nhất một đáp án");
+                                      message.warning(
+                                        "Phải có ít nhất một đáp án"
+                                      );
                                     }
                                   }}
                                 >
                                   Xóa
                                 </Button>
-                                {currentQuestion.correctAnswer === currentQuestion.options?.[index] && (
-                                  <CheckCircleOutlined style={{ color: '#52c41a' }} />
+                                {currentQuestion.correctAnswer ===
+                                  currentQuestion.options?.[index] && (
+                                  <CheckCircleOutlined
+                                    style={{ color: "#52c41a" }}
+                                  />
                                 )}
                               </Space>
                             ))}
@@ -363,7 +410,10 @@ export default function Page() {
                             type="dashed"
                             onClick={() => {
                               add();
-                              const newOptions = [...(currentQuestion.options || []), ""];
+                              const newOptions = [
+                                ...(currentQuestion.options || []),
+                                "",
+                              ];
                               handleQuestionChange("options", newOptions);
                             }}
                             block
@@ -398,7 +448,9 @@ export default function Page() {
                     >
                       <CodeEditor
                         initialValue={currentQuestion.codeAnswer}
-                        onChange={(value) => handleQuestionChange("codeAnswer", value)}
+                        onChange={(value) =>
+                          handleQuestionChange("codeAnswer", value)
+                        }
                       />
                     </Form.Item>
                   </>
@@ -456,12 +508,16 @@ export default function Page() {
                 setCurrentQuestionIndex(index);
                 onCloseDrawer();
               }}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <List.Item.Meta
                 avatar={<Avatar icon={<QuestionCircleOutlined />} />}
                 title={`Câu hỏi ${index + 1} (${question.points} điểm)`}
-                description={question.content.length > 50 ? `${question.content.substring(0, 50)}...` : question.content}
+                description={
+                  question.content.length > 50
+                    ? `${question.content.substring(0, 50)}...`
+                    : question.content
+                }
               />
             </List.Item>
           )}

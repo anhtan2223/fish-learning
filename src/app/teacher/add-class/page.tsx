@@ -107,9 +107,10 @@ export default function AddCourse() {
             Tạo Mới
           </Button>
 
-
           <Link href="/teacher">
-            <Button danger className="mx-5">Quay Lại</Button>
+            <Button danger className="mx-5">
+              Quay Lại
+            </Button>
           </Link>
         </Form.Item>
       </Form>

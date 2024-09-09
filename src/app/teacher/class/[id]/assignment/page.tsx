@@ -13,10 +13,13 @@ import {
   Checkbox,
   Divider,
 } from "antd";
-import { ArrowLeftOutlined, SaveOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  SaveOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import moment from "moment";
 
 const { Title, Text } = Typography;
 
@@ -50,11 +53,17 @@ export default function CreateAssignmentPage() {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        <Button icon={<ArrowLeftOutlined />} onClick={goBack} className="hover:bg-blue-50">
+        <Button
+          icon={<ArrowLeftOutlined />}
+          onClick={goBack}
+          className="hover:bg-blue-50"
+        >
           Quay lại Lớp học
         </Button>
         <Card className="shadow-md">
-          <Title level={2} className="text-center mb-6">Tạo Bài Tập Mới</Title>
+          <Title level={2} className="text-center mb-6">
+            Tạo Bài Tập Mới
+          </Title>
           <Divider />
           <Form
             form={form}
@@ -65,19 +74,29 @@ export default function CreateAssignmentPage() {
             <Form.Item
               name="title"
               label={<Text strong>Tiêu đề</Text>}
-              rules={[{ required: true, message: "Vui lòng nhập tiêu đề bài tập" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập tiêu đề bài tập" },
+              ]}
             >
               <Input size="large" placeholder="Nhập tiêu đề bài tập" />
             </Form.Item>
             <Form.Item
               name="description"
               label={<Text strong>Mô tả</Text>}
-              rules={[{ required: true, message: "Vui lòng nhập mô tả bài tập" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập mô tả bài tập" },
+              ]}
             >
-              <Input.TextArea rows={6} placeholder="Nhập mô tả chi tiết về bài tập" />
+              <Input.TextArea
+                rows={6}
+                placeholder="Nhập mô tả chi tiết về bài tập"
+              />
             </Form.Item>
             <Form.Item>
-              <Checkbox checked={hasDueDate} onChange={(e) => setHasDueDate(e.target.checked)}>
+              <Checkbox
+                checked={hasDueDate}
+                onChange={(e) => setHasDueDate(e.target.checked)}
+              >
                 <Text strong>Có hạn nộp</Text>
               </Checkbox>
             </Form.Item>
@@ -85,13 +104,15 @@ export default function CreateAssignmentPage() {
               <Form.Item
                 name="dueDate"
                 label={<Text strong>Hạn nộp</Text>}
-                rules={[{ required: true, message: "Vui lòng chọn hạn nộp bài tập" }]}
+                rules={[
+                  { required: true, message: "Vui lòng chọn hạn nộp bài tập" },
+                ]}
               >
                 <DatePicker
                   showTime
                   format="DD/MM/YYYY HH:mm"
                   size="large"
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                   placeholder="Chọn ngày và giờ hạn nộp"
                   suffixIcon={<ClockCircleOutlined />}
                 />

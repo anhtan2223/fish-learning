@@ -9,6 +9,6 @@ export default function Logo() {
   return (
     <Image src={resolvedTheme == 'dark' ? '/logo.dark.png' : '/logo.light.png'}
       width={100} height={100}
-      className='w-auto h-[60px] ' alt='Logo'></Image>
+      className='w-auto h-[80px] ' alt='Logo'></Image>
   );
 }
