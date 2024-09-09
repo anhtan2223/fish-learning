@@ -15,7 +15,7 @@ export default function ListClass() {
             {Array.from({ length: pageSize }).map((_, index) => (
                 <div 
                     key={index} 
-                    onClick={() => router.push(`/class/${index}`)} 
+                    onClick={() => router.push(`/class/${index}/register`)} 
                     className='flex justify-center cursor-pointer transform hover:scale-105 transition-transform duration-300 ease-in-out'
                 >
                     <ClassElement />

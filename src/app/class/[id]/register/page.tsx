@@ -53,7 +53,7 @@ export default function Page() {
         </Space>
         <Divider />
         <div className="flex justify-center gap-5">
-          <Link href="/class/id">
+          <Link href="/class/1">
             <Button type="primary" icon={<BookOutlined />}>
               Ghi Danh Lớp Học
             </Button>
