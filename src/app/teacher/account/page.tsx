@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Form, Input, Button, Card, Typography, message, Avatar, Upload, Row, Col, Divider } from "antd";
-import { UserOutlined, MailOutlined, UploadOutlined, LockOutlined, CameraOutlined } from "@ant-design/icons";
+import { UserOutlined, MailOutlined, UploadOutlined, LockOutlined, CameraOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -36,10 +36,21 @@ export default function AccountSettingsPage() {
         }
     };
 
+    const handleGoBack = () => {
+        router.back();
+    };
+
     return (
         <div className="p-8">
             <Card className="w-full mx-auto border-0 overflow-hidden">
                 <div className="p-6">
+                    <Button 
+                        icon={<ArrowLeftOutlined />} 
+                        onClick={handleGoBack}
+                        className="absolute top-4 left-4"
+                    >
+                        Quay lại
+                    </Button>
                     <Title level={2} className="text-center mb-0">
                         <UserOutlined className="mr-3" />
                         Cài Đặt Tài Khoản

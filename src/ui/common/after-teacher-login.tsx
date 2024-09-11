@@ -21,7 +21,7 @@ export default function AfterTeacherLogin() {
     }
     function ChangePage() {
         return <div className=''>
-            <Link href='/account' className='flex gap-3 py-2  hover:text-primary cursor-pointer transition-colors'>
+            <Link href='/teacher/account' className='flex gap-3 py-2  hover:text-primary cursor-pointer transition-colors'>
                 <UserOutlined style={{ fontSize: '20px' }} />
                 Tài Khoản Của Tôi
             </Link>
