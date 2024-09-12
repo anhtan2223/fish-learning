@@ -25,7 +25,8 @@
       "@interface/*" : ["./src/lib/interface/*"] ,
       "@service/*" : ["./src/lib/service/*"] ,
       "@util" : ["./src/lib/utils"] ,
-      "@storage" : ["./src/lib/storage"]
+      "@storage" : ["./src/lib/storage"] ,
+      "@mock" : ["./src/lib/mock"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

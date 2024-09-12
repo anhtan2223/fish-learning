@@ -14,12 +14,9 @@ import {
   Spin,
   Divider,
   Popconfirm,
-  Radio,
-  Drawer,
-  List,
-  Avatar,
   InputNumber,
   Upload,
+  Tooltip,
 } from "antd";
 import {
   ArrowLeftOutlined,
@@ -28,29 +25,18 @@ import {
   DeleteOutlined,
   LeftOutlined,
   RightOutlined,
-  MinusCircleOutlined,
   MenuOutlined,
-  QuestionCircleOutlined,
-  CheckCircleOutlined,
 } from "@ant-design/icons";
-import CodeEditor from "@/ui/assignment/code-editor";
+import { MultipleChoiceQuestion , CodeQuestion , Question } from "@/lib/interface";
+import MultipleQuestion from "@/ui/assignment/multiple-question";
+import CodeQuestionComponent from "@/ui/assignment/code-question";
+import DrawerAssignment from "@/ui/assignment/drawer-assignment";
+import { questionMock } from "@/lib/mock";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
-interface Question {
-  id: number;
-  type: string;
-  content: string;
-  options?: string[];
-  correctAnswer?: string;
-  points: number;
-  explanation?: string;
-  hint?: string;
-  codeAnswer?: string;
-  image?: string;
-}
 
 export default function Page() {
   const router = useRouter();
@@ -73,33 +59,7 @@ export default function Page() {
           title: "Triển khai Thuật toán KNN",
         });
 
-        setQuestions([
-          {
-            id: 1,
-            type: "multiple_choice",
-            content: "Thuật toán KNN là viết tắt của?",
-            options: [
-              "K-Nearest Neighbors",
-              "K-Nearest Networks",
-              "K-Nearest Nodes",
-              "K-Nearest Numerals",
-            ],
-            correctAnswer: "K-Nearest Neighbors",
-            points: 1,
-            explanation:
-              "KNN stands for K-Nearest Neighbors, a popular machine learning algorithm.",
-          },
-          {
-            id: 2,
-            type: "code",
-            content:
-              "Viết một hàm Python để tính khoảng cách Euclidean giữa hai điểm.",
-            points: 2,
-            hint: "Hãy sử dụng công thức khoảng cách Euclidean và hàm math.sqrt().",
-            codeAnswer:
-              "import math\n\ndef euclidean_distance(point1, point2):\n    return math.sqrt(sum((p1 - p2) ** 2 for p1, p2 in zip(point1, point2)))",
-          },
-        ]);
+        setQuestions(questionMock);
       } catch (error) {
         message.error("Có lỗi xảy ra khi tải dữ liệu");
       } finally {
@@ -115,16 +75,13 @@ export default function Page() {
   };
 
   const handleAddQuestion = () => {
-    const newQuestion: Question = {
+    const newQuestion: MultipleChoiceQuestion = {
       id: questions.length + 1,
       type: "multiple_choice",
       content: "",
       options: [""],
       correctAnswer: "",
       points: 1,
-      explanation: "",
-      hint: "",
-      codeAnswer: "",
     };
     setQuestions([...questions, newQuestion]);
     setCurrentQuestionIndex(questions.length);
@@ -188,6 +145,28 @@ export default function Page() {
     }
   };
 
+  const handleAddTestCase = () => {
+    const currentQuestion = questions[currentQuestionIndex] as CodeQuestion;
+    const newTestCases = [
+      ...(currentQuestion.testCases || []),
+      { input: "", expectedOutput: "", isHidden: false },
+    ];
+    handleQuestionChange("testCases", newTestCases);
+  };
+
+  const handleTestCaseChange = (index: number, field: string, value: any) => {
+    const currentQuestion = questions[currentQuestionIndex] as CodeQuestion;
+    const newTestCases = [...(currentQuestion.testCases || [])];
+    newTestCases[index] = { ...newTestCases[index], [field]: value };
+    handleQuestionChange("testCases", newTestCases);
+  };
+
+  const handleDeleteTestCase = (index: number) => {
+    const currentQuestion = questions[currentQuestionIndex] as CodeQuestion;
+    const newTestCases = (currentQuestion.testCases || []).filter((_, i) => i !== index);
+    handleQuestionChange("testCases", newTestCases);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -208,31 +187,33 @@ export default function Page() {
           <Title level={2}>Cài đặt bài tập: {assignment?.title}</Title>
           <Form form={form} layout="vertical">
             <Space style={{ marginBottom: 16 }}>
-              <Button
-                icon={<LeftOutlined />}
-                onClick={handlePreviousQuestion}
-                disabled={currentQuestionIndex === 0}
-              >
-                Câu trước
-              </Button>
-              <Button
-                icon={<RightOutlined />}
-                onClick={handleNextQuestion}
-                disabled={currentQuestionIndex === questions.length - 1}
-              >
-                Câu sau
-              </Button>
-              <Button icon={<MenuOutlined />} onClick={showDrawer}>
-                Tất cả câu hỏi
-              </Button>
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={handleAddQuestion}
-              >
-                Thêm câu hỏi
-              </Button>
-              <Text>
+              <Tooltip title="Câu hỏi trước">
+                <Button
+                  icon={<LeftOutlined />}
+                  onClick={handlePreviousQuestion}
+                  disabled={currentQuestionIndex === 0}
+                />
+              </Tooltip>
+              <Tooltip title="Câu hỏi tiếp theo">
+                <Button
+                  icon={<RightOutlined />}
+                  onClick={handleNextQuestion}
+                  disabled={currentQuestionIndex === questions.length - 1}
+                />
+              </Tooltip>
+              <Tooltip title="Xem tất cả câu hỏi">
+                <Button icon={<MenuOutlined />} onClick={showDrawer} />
+              </Tooltip>
+              <Tooltip title="Thêm câu hỏi mới">
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={handleAddQuestion}
+                >
+                  Thêm câu hỏi
+                </Button>
+              </Tooltip>
+              <Text strong>
                 Câu hỏi {currentQuestionIndex + 1}/{questions.length}
               </Text>
             </Space>
@@ -302,171 +283,22 @@ export default function Page() {
                   </Upload>
                 </Form.Item>
                 {currentQuestion.type === "multiple_choice" && (
-                  <Form.List
-                    name={["questions", currentQuestionIndex, "options"]}
-                    initialValue={currentQuestion.options}
-                  >
-                    {(fields, { add, remove }) => (
-                      <>
-                        <Form.Item label="Đáp án" required>
-                          <Space direction="vertical" style={{ width: "100%" }}>
-                            {fields.map((field, index) => (
-                              <Space
-                                key={field.key}
-                                style={{
-                                  display: "flex",
-                                  marginBottom: 8,
-                                  width: "100%",
-                                }}
-                                align="baseline"
-                              >
-                                <Radio
-                                  value={currentQuestion.options?.[index]}
-                                  checked={
-                                    currentQuestion.correctAnswer ===
-                                    currentQuestion.options?.[index]
-                                  }
-                                  onChange={(e) =>
-                                    handleQuestionChange(
-                                      "correctAnswer",
-                                      e.target.value
-                                    )
-                                  }
-                                >
-                                  <Form.Item
-                                    {...field}
-                                    validateTrigger={["onChange", "onBlur"]}
-                                    rules={[
-                                      {
-                                        required: true,
-                                        whitespace: true,
-                                        message:
-                                          "Vui lòng nhập lựa chọn hoặc xóa trường này.",
-                                      },
-                                    ]}
-                                    noStyle
-                                  >
-                                    <Input
-                                      placeholder={`Lựa chọn ${index + 1}`}
-                                      style={{ width: 300 }}
-                                      onChange={(e) => {
-                                        const newOptions = [
-                                          ...(currentQuestion.options || []),
-                                        ];
-                                        newOptions[index] = e.target.value;
-                                        handleQuestionChange(
-                                          "options",
-                                          newOptions
-                                        );
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </Radio>
-                                <Button
-                                  type="text"
-                                  danger
-                                  icon={<MinusCircleOutlined />}
-                                  onClick={() => {
-                                    if (fields.length > 1) {
-                                      remove(field.name);
-                                      const newOptions = [
-                                        ...(currentQuestion.options || []),
-                                      ];
-                                      newOptions.splice(index, 1);
-                                      handleQuestionChange(
-                                        "options",
-                                        newOptions
-                                      );
-                                      if (
-                                        currentQuestion.correctAnswer ===
-                                        currentQuestion.options?.[index]
-                                      ) {
-                                        handleQuestionChange(
-                                          "correctAnswer",
-                                          ""
-                                        );
-                                      }
-                                    } else {
-                                      message.warning(
-                                        "Phải có ít nhất một đáp án"
-                                      );
-                                    }
-                                  }}
-                                >
-                                  Xóa
-                                </Button>
-                                {currentQuestion.correctAnswer ===
-                                  currentQuestion.options?.[index] && (
-                                  <CheckCircleOutlined
-                                    style={{ color: "#52c41a" }}
-                                  />
-                                )}
-                              </Space>
-                            ))}
-                          </Space>
-                        </Form.Item>
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => {
-                              add();
-                              const newOptions = [
-                                ...(currentQuestion.options || []),
-                                "",
-                              ];
-                              handleQuestionChange("options", newOptions);
-                            }}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Thêm lựa chọn
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
+                  <MultipleQuestion
+                    currentQuestion={currentQuestion as MultipleChoiceQuestion}
+                    currentQuestionIndex={currentQuestionIndex}
+                    handleQuestionChange={handleQuestionChange}
+                  />
                 )}
                 {currentQuestion.type === "code" && (
-                  <>
-                    <Form.Item
-                      label="Gợi ý"
-                      name={["questions", currentQuestionIndex, "hint"]}
-                      initialValue={currentQuestion.hint}
-                    >
-                      <TextArea
-                        rows={2}
-                        onChange={(e) =>
-                          handleQuestionChange("hint", e.target.value)
-                        }
-                        placeholder="Nhập gợi ý cho câu hỏi code"
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label="Đáp án mẫu"
-                      name={["questions", currentQuestionIndex, "codeAnswer"]}
-                      initialValue={currentQuestion.codeAnswer}
-                    >
-                      <CodeEditor
-                        initialValue={currentQuestion.codeAnswer}
-                        onChange={(value) =>
-                          handleQuestionChange("codeAnswer", value)
-                        }
-                      />
-                    </Form.Item>
-                  </>
+                  <CodeQuestionComponent
+                    currentQuestion={currentQuestion as CodeQuestion}
+                    currentQuestionIndex={currentQuestionIndex}
+                    handleQuestionChange={handleQuestionChange}
+                    handleTestCaseChange={handleTestCaseChange}
+                    handleAddTestCase={handleAddTestCase}
+                    handleDeleteTestCase={handleDeleteTestCase}
+                  />  
                 )}
-                <Form.Item
-                  label="Giải thích đáp án"
-                  name={["questions", currentQuestionIndex, "explanation"]}
-                  initialValue={currentQuestion.explanation}
-                >
-                  <TextArea
-                    rows={2}
-                    onChange={(e) =>
-                      handleQuestionChange("explanation", e.target.value)
-                    }
-                  />
-                </Form.Item>
                 <Popconfirm
                   title="Bạn có chắc chắn muốn xóa câu hỏi này?"
                   onConfirm={handleDeleteQuestion}
@@ -491,38 +323,12 @@ export default function Page() {
           </Form>
         </Card>
       </Space>
-      <Drawer
-        title={<Title level={4}>Tất cả câu hỏi</Title>}
-        placement="right"
-        onClose={onCloseDrawer}
-        visible={drawerVisible}
-        width={400}
-      >
-        <List
-          itemLayout="horizontal"
-          dataSource={questions}
-          renderItem={(question, index) => (
-            <List.Item
-              key={question.id}
-              onClick={() => {
-                setCurrentQuestionIndex(index);
-                onCloseDrawer();
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <List.Item.Meta
-                avatar={<Avatar icon={<QuestionCircleOutlined />} />}
-                title={`Câu hỏi ${index + 1} (${question.points} điểm)`}
-                description={
-                  question.content.length > 50
-                    ? `${question.content.substring(0, 50)}...`
-                    : question.content
-                }
-              />
-            </List.Item>
-          )}
-        />
-      </Drawer>
+      <DrawerAssignment
+        questions={questions}
+        drawerVisible={drawerVisible}
+        onCloseDrawer={onCloseDrawer}
+        setCurrentQuestionIndex={setCurrentQuestionIndex}
+      />
     </div>
   );
 }
