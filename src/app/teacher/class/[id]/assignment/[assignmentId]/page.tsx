@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Typography,
   Card,
@@ -16,8 +16,9 @@ import {
   Tooltip,
   Input,
   DatePicker,
-  Modal,
   Spin,
+  Modal,
+  Progress,
 } from "antd";
 import {
   ArrowLeftOutlined,
@@ -33,34 +34,29 @@ import { useRouter } from "next/navigation";
 import moment from "moment";
 import { ColumnType } from "antd/es/table";
 import dayjs from "dayjs";
+import { Assignment, Submission, Student } from "@/lib/interface";
+import { listStudents } from "@/lib/mock/user.mock";
+import { studentAssignmentSubmissionsMock } from "@/lib/mock/submission.mock";
+import { assignmentMock } from "@/lib/mock/assignment.mock";
 
-const { Title, Paragraph } = Typography;
-const { confirm } = Modal;
+const { Title, Paragraph, Text } = Typography;
 const { RangePicker } = DatePicker;
+const { confirm } = Modal;
 
-interface Assignment {
-  id: number;
-  title: string;
-  description: string;
-  startDate: string;
-  dueDate: string;
-  totalPoints: number;
-  status: string;
-}
-
-interface Submission {
-  id: number;
+interface ExtendedSubmission {
+  studentId: number;
   studentName: string;
-  submissionDate: string | null;
+  studentCode: string;
   status: "Đã làm" | "Chưa làm";
-  averageGrade: number | null;
-  highestGrade: number | null;
+  submittedAt: Date | null;
+  averageScore: number | null;
+  highestScore: number | null;
 }
 
 export default function AssignmentDashboardPage() {
   const router = useRouter();
   const [assignment, setAssignment] = useState<Assignment | null>(null);
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [submissions, setSubmissions] = useState<ExtendedSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -78,42 +74,30 @@ export default function AssignmentDashboardPage() {
         // Simulating API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        setAssignment({
-          id: 1,
-          title: "Triển khai Thuật toán KNN",
-          description: "Triển khai thuật toán K-Nearest Neighbors từ đầu.",
-          startDate: "2023-07-01T00:00:00",
-          dueDate: "2023-07-15T23:59:59",
-          totalPoints: 100,
-          status: "Đang hoạt động",
+        const mockAssignment = assignmentMock[0]; // Using the first assignment from mock data
+        setAssignment(mockAssignment);
+
+        const mockSubmissions: ExtendedSubmission[] = listStudents.map((student) => {
+          const studentSubmission = studentAssignmentSubmissionsMock.find(
+            (sub) => sub.assignmentId === mockAssignment.id && sub.studentId === student.id
+          );
+          const submissions = studentSubmission?.submissions || [];
+          const scores = submissions.map(s => s.score);
+          const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+          const highestScore = scores.length > 0 ? Math.max(...scores) : null;
+          
+          return {
+            studentId: student.id,
+            studentName: student.fullName,
+            studentCode: student.student_code,
+            status: submissions.length > 0 ? "Đã làm" : "Chưa làm",
+            submittedAt: submissions.length > 0 ? submissions[submissions.length - 1].submittedAt : null,
+            averageScore: averageScore,
+            highestScore: highestScore,
+          };
         });
 
-        setSubmissions([
-          {
-            id: 1,
-            studentName: "Nguyễn Văn A",
-            submissionDate: "2023-07-10T14:30:00",
-            status: "Đã làm",
-            averageGrade: 85,
-            highestGrade: 90,
-          },
-          {
-            id: 2,
-            studentName: "Trần Thị B",
-            submissionDate: "2023-07-12T09:15:00",
-            status: "Đã làm",
-            averageGrade: 88,
-            highestGrade: 92,
-          },
-          {
-            id: 3,
-            studentName: "Lê Văn C",
-            submissionDate: null,
-            status: "Chưa làm",
-            averageGrade: null,
-            highestGrade: null,
-          },
-        ]);
+        setSubmissions(mockSubmissions);
       } catch (error) {
         message.error("Có lỗi xảy ra khi tải dữ liệu");
       } finally {
@@ -146,16 +130,26 @@ export default function AssignmentDashboardPage() {
 
   const handleSave = () => {
     if (assignment && editedDateRange) {
-      setAssignment({
-        ...assignment,
-        title: editedTitle,
-        description: editedDescription,
-        startDate: editedDateRange[0].format("YYYY-MM-DDTHH:mm:ss"),
-        dueDate: editedDateRange[1].format("YYYY-MM-DDTHH:mm:ss"),
-        totalPoints: editedTotalPoints,
+      confirm({
+        title: 'Xác nhận lưu thay đổi',
+        icon: <ExclamationCircleOutlined />,
+        content: 'Bạn có chắc chắn muốn lưu các thay đổi này?',
+        onOk() {
+          setAssignment({
+            ...assignment,
+            title: editedTitle,
+            description: editedDescription,
+            startDate: editedDateRange[0].format("YYYY-MM-DDTHH:mm:ssZ"),
+            dueDate: editedDateRange[1].format("YYYY-MM-DDTHH:mm:ssZ"),
+            totalPoints: editedTotalPoints,
+          });
+          setIsEditing(false);
+          message.success("Đã lưu thay đổi");
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
       });
-      setIsEditing(false);
-      message.success("Đã lưu thay đổi");
     }
   };
 
@@ -188,33 +182,35 @@ export default function AssignmentDashboardPage() {
     }
   };
 
-  const filteredSubmissions = submissions.filter((submission) => {
-    return submission.studentName
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
-  });
+  const filteredSubmissions = useMemo(() => {
+    return submissions.filter((submission) =>
+      submission.studentName.toLowerCase().includes(searchText.toLowerCase()) ||
+      submission.studentCode.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }, [submissions, searchText]);
 
   const columns = [
+    {
+      title: "Mã Học Sinh",
+      dataIndex: "studentCode",
+      key: "studentCode",
+      sorter: (a: ExtendedSubmission, b: ExtendedSubmission) =>
+        a.studentCode.localeCompare(b.studentCode),
+    },
     {
       title: "Tên Học Sinh",
       dataIndex: "studentName",
       key: "studentName",
-      sorter: (a: Submission, b: Submission) =>
+      sorter: (a: ExtendedSubmission, b: ExtendedSubmission) =>
         a.studentName.localeCompare(b.studentName),
     },
     {
       title: "Ngày Nộp",
-      dataIndex: "submissionDate",
-      key: "submissionDate",
-      sorter: (a: Submission, b: Submission) => {
-        if (!a.submissionDate) return 1;
-        if (!b.submissionDate) return -1;
-        return (
-          moment(a.submissionDate).unix() - moment(b.submissionDate).unix()
-        );
-      },
-      render: (date: string | null) =>
-        date ? moment(date).format("DD/MM/YYYY HH:mm") : "Chưa nộp",
+      dataIndex: "submittedAt",
+      key: "submittedAt",
+      sorter: (a: ExtendedSubmission, b: ExtendedSubmission) =>
+        (a.submittedAt?.getTime() || 0) - (b.submittedAt?.getTime() || 0),
+      render: (date: Date | null) => date ? moment(date).format("DD/MM/YYYY HH:mm") : "Chưa nộp",
     },
     {
       title: "Trạng Thái",
@@ -224,7 +220,7 @@ export default function AssignmentDashboardPage() {
         { text: "Đã làm", value: "Đã làm" },
         { text: "Chưa làm", value: "Chưa làm" },
       ],
-      onFilter: (value: string | number | boolean, record: Submission) =>
+      onFilter: (value: string | number | boolean, record: ExtendedSubmission) =>
         record.status === value,
       render: (status: "Đã làm" | "Chưa làm") => (
         <Tag color={status === "Đã làm" ? "green" : "red"}>{status}</Tag>
@@ -232,33 +228,53 @@ export default function AssignmentDashboardPage() {
     },
     {
       title: "Điểm Trung Bình",
-      dataIndex: "averageGrade",
-      key: "averageGrade",
-      sorter: (a: Submission, b: Submission) =>
-        (a.averageGrade || 0) - (b.averageGrade || 0),
-      render: (grade: number | null) =>
-        grade !== null ? grade.toFixed(2) : "Chưa có",
+      dataIndex: "averageScore",
+      key: "averageScore",
+      sorter: (a: ExtendedSubmission, b: ExtendedSubmission) =>
+        (a.averageScore || 0) - (b.averageScore || 0),
+      render: (score: number | null) =>
+        score !== null ? (
+          <Tooltip title={`${score.toFixed(2)}/${assignment?.totalPoints}`}>
+            <Progress
+              percent={(score / (assignment?.totalPoints || 1)) * 100}
+              size="small"
+              format={(percent) => `${score.toFixed(2)}`}
+            />
+          </Tooltip>
+        ) : (
+          <Text type="secondary">Chưa có</Text>
+        ),
     },
     {
       title: "Điểm Cao Nhất",
-      dataIndex: "highestGrade",
-      key: "highestGrade",
-      sorter: (a: Submission, b: Submission) =>
-        (a.highestGrade || 0) - (b.highestGrade || 0),
-      render: (grade: number | null) =>
-        grade !== null ? grade.toFixed(2) : "Chưa có",
+      dataIndex: "highestScore",
+      key: "highestScore",
+      sorter: (a: ExtendedSubmission, b: ExtendedSubmission) =>
+        (a.highestScore || 0) - (b.highestScore || 0),
+      render: (score: number | null) =>
+        score !== null ? (
+          <Tooltip title={`${score.toFixed(2)}/${assignment?.totalPoints}`}>
+            <Progress
+              percent={(score / (assignment?.totalPoints || 1)) * 100}
+              size="small"
+              format={(percent) => `${score.toFixed(2)}`}
+            />
+          </Tooltip>
+        ) : (
+          <Text type="secondary">Chưa có</Text>
+        ),
     },
     {
       title: "Chi Tiết Bài Làm",
       key: "action",
-      render: (_: any, record: Submission) => (
+      render: (_: any, record: ExtendedSubmission) => (
         <Space size="middle">
           <Tooltip title="Xem bài nộp">
             <Button
               icon={<EyeOutlined />}
               onClick={() =>
                 router.push(
-                  `/teacher/class/${assignment?.id}/assignment/${assignment?.id}/submission/${record.id}`
+                  `/assignment/${assignment?.id}/history/${record.studentId}`
                 )
               }
             />
@@ -287,8 +303,8 @@ export default function AssignmentDashboardPage() {
   const submittedCount = submissions.filter(
     (s) => s.status === "Đã làm"
   ).length;
-  const averageGrade =
-    submissions.reduce((sum, s) => sum + (s.averageGrade || 0), 0) /
+  const averageScore =
+    submissions.reduce((sum, s) => sum + (s.averageScore || 0), 0) /
       submittedCount || 0;
 
   return (
@@ -341,25 +357,17 @@ export default function AssignmentDashboardPage() {
               <Paragraph>{assignment.description}</Paragraph>
               <Descriptions bordered>
                 <Descriptions.Item label="Thời gian bắt đầu">
-                  {moment(assignment.startDate).isValid()
-                    ? moment(assignment.startDate).format("DD/MM/YYYY HH:mm")
-                    : "Không có thời gian bắt đầu"}
+                  {moment(assignment.startDate).format("DD/MM/YYYY HH:mm")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Thời hạn nộp">
-                  {moment(assignment.dueDate).isValid()
-                    ? moment(assignment.dueDate).format("DD/MM/YYYY HH:mm")
-                    : "Không có thời hạn nộp"}
+                  {moment(assignment.dueDate).format("DD/MM/YYYY HH:mm")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Tổng điểm">
                   {assignment.totalPoints}
                 </Descriptions.Item>
                 <Descriptions.Item label="Trạng thái">
-                  <Tag
-                    color={
-                      assignment.status === "Đang hoạt động" ? "green" : "red"
-                    }
-                  >
-                    {assignment.status}
+                  <Tag color={assignment.status === "active" ? "green" : "red"}>
+                    {assignment.status === "active" ? "Đang hoạt động" : "Không hoạt động"}
                   </Tag>
                 </Descriptions.Item>
               </Descriptions>
@@ -386,7 +394,7 @@ export default function AssignmentDashboardPage() {
           <Row gutter={16}>
             <Col span={8}>
               <Statistic
-                title="Tổng số Bài nộp"
+                title="Tổng số người đã nộp"
                 value={submittedCount}
                 suffix={`/ ${submissions.length}`}
               />
@@ -401,7 +409,7 @@ export default function AssignmentDashboardPage() {
             <Col span={8}>
               <Statistic
                 title="Điểm Trung bình"
-                value={averageGrade.toFixed(2)}
+                value={averageScore.toFixed(2)}
                 suffix={`/ ${assignment.totalPoints}`}
               />
             </Col>
@@ -410,9 +418,9 @@ export default function AssignmentDashboardPage() {
         <Card title="Danh sách Bài nộp">
           <Space style={{ marginBottom: 16 }}>
             <Input
-              placeholder="Tìm kiếm theo tên học sinh"
+              placeholder="Tìm kiếm theo tên hoặc mã học sinh"
               onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 200 }}
+              style={{ width: 250 }}
               prefix={<SearchOutlined />}
             />
             <Button
@@ -424,9 +432,9 @@ export default function AssignmentDashboardPage() {
             </Button>
           </Space>
           <Table
-            columns={columns as ColumnType<Submission>[]}
+            columns={columns as ColumnType<ExtendedSubmission>[]}
             dataSource={filteredSubmissions}
-            rowKey="id"
+            rowKey="studentId"
             pagination={{ pageSize: 10 }}
           />
         </Card>

@@ -251,7 +251,7 @@ export default function EditClassPage() {
               onClick={handleAddSession}
               icon={<PlusOutlined />}
             >
-              Add Session
+              Thêm Mục Mới
             </Button>
           </Space>
         </Col>
@@ -268,7 +268,7 @@ export default function EditClassPage() {
               icon={<DeleteOutlined />}
               onClick={() => handleDeleteSession(activeTab)}
             >
-              Delete Session
+              Xoá Mục Này
             </Button>
           ),
         }}

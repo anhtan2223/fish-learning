@@ -1,40 +1,76 @@
 'use client'
 import { useState, useEffect } from "react";
-import { Card, Space, Typography, Button, Table, Row, Col, Statistic, Divider, Tag } from "antd";
+import { Card, Space, Typography, Button, Table, Row, Col, Statistic, Divider, Tag, Result } from "antd";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { ClockCircleOutlined, FileTextOutlined, TrophyOutlined, BookOutlined, RightOutlined } from "@ant-design/icons";
+import { Assignment, Submission, StudentAssignmentSubmissions } from "@/lib/interface";
+import { assignmentMock } from "@/lib/mock/assignment.mock";
+import { studentAssignmentSubmissionsMock } from "@/lib/mock/submission.mock";
+import HistorySubmission from "@/ui/submisstion/history-submission";
 
 const { Title, Paragraph } = Typography;
 
-interface HistoryRecord {
-    id: number;
-    date: string;
-    score: number;
-    maxScore: number;
-}
-
 export default function WaitingRoom() {
-    const [assignmentId, setAssignmentId] = useState<string | string[]>('');
-    const [questions, setQuestions] = useState<number[]>([]);
+    const [assignment, setAssignment] = useState<Assignment | null>(null);
+    const [submissions, setSubmissions] = useState<Submission[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const params = useParams();
 
     useEffect(() => {
         if (params.id) {
-            setAssignmentId(params.id);
-            // Fetch questions based on assignmentId
-            setQuestions([1, 2, 3, 4, 5]); // Replace with actual API call
+            const assignmentId = Number(params.id);
+            const foundAssignment = assignmentMock.find(a => a.id === assignmentId);
+            if (foundAssignment) {
+                setAssignment(foundAssignment);
+                const studentId = 1; // Assuming we have the current student's ID
+                const studentSubmissions = studentAssignmentSubmissionsMock.find(
+                    sas => sas.assignmentId === assignmentId && sas.studentId === studentId
+                );
+                if (studentSubmissions) {
+                    setSubmissions(studentSubmissions.submissions);
+                }
+            } else {
+                setError("Không tìm thấy bài tập");
+            }
+            setLoading(false);
         }
     }, [params.id]);
 
     const handleStart = () => {
-        router.push(`/assignment/${assignmentId}/doing`);
+        if (assignment) {
+            router.push(`/assignment/${assignment.id}/doing`);
+        }
     };
 
     const handleBackHome = () => {
         router.push(`/class/1`);
     };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return (
+            <Result
+                status="404"
+                title="404"
+                subTitle={error}
+                extra={
+                    <Button type="primary" onClick={handleBackHome}>
+                        Quay lại lớp học
+                    </Button>
+                }
+            />
+        );
+    }
+
+    if (!assignment) {
+        return null;
+    }
 
     return (
         <div className="max-w-6xl mx-auto p-4 bg-gray-50 min-h-screen">
@@ -42,10 +78,10 @@ export default function WaitingRoom() {
                 <Space direction="vertical" size="middle" className="w-full">
                     <div className="text-center">
                         <Title level={2} className="text-blue-600 mb-0">
-                            Bài Tập Số {assignmentId}
+                            Bài Tập Số {assignment.id}
                         </Title>
                         <Title level={3} className="text-gray-600 mt-2">
-                            Phân tích dữ liệu cơ bản
+                            {assignment.title}
                         </Title>
                     </div>
                     <Divider />
@@ -53,7 +89,7 @@ export default function WaitingRoom() {
                         <Col span={8}>
                             <Statistic
                                 title={<span className="text-lg font-semibold">Số câu hỏi</span>}
-                                value={questions.length}
+                                value={assignment.questions.length}
                                 prefix={<FileTextOutlined className="text-blue-500"/>}
                                 valueStyle={{ color: '#1677ff', fontSize: '2rem' }}
                             />
@@ -61,7 +97,7 @@ export default function WaitingRoom() {
                         <Col span={8}>
                             <Statistic
                                 title={<span className="text-lg font-semibold">Thời gian làm bài</span>}
-                                value={60}
+                                value={60} // Assuming 60 minutes as default
                                 suffix="phút"
                                 prefix={<ClockCircleOutlined className="text-red-500" />}
                                 valueStyle={{ color: '#cf1322', fontSize: '2rem' }}
@@ -70,7 +106,7 @@ export default function WaitingRoom() {
                         <Col span={8}>
                             <Statistic
                                 title={<span className="text-lg font-semibold">Điểm tối đa</span>}
-                                value={100}
+                                value={assignment.totalPoints}
                                 prefix={<TrophyOutlined className="text-yellow-500" />}
                                 valueStyle={{ color: '#faad14', fontSize: '2rem' }}
                             />
@@ -79,7 +115,7 @@ export default function WaitingRoom() {
                     <Divider />
                     <Card className="bg-blue-50 dark:bg-dark border-blue-200 ">
                         <Paragraph className="text-lg text-gray-700 dark:text-gray-300">
-                            Bạn sẽ làm một bài tập gồm {questions.length} câu hỏi về phân tích dữ liệu sử dụng Python và các thư viện như Pandas, Matplotlib.
+                            {assignment.description}
                         </Paragraph>
                         <Paragraph strong className="text-base text-blue-700 dark:text-blue-300 mt-4">
                             Lưu ý:
@@ -91,44 +127,7 @@ export default function WaitingRoom() {
                             <li>Hệ thống sẽ tự động nộp bài khi hết thời gian</li>
                         </ul>
                     </Card>
-                    <Card title={<span className="text-xl font-bold text-blue-600">Lịch sử làm bài</span>} className="shadow-md">
-                        <Table<HistoryRecord>
-                            dataSource={[
-                                { id: 1, date: '2023-05-15', score: 25, maxScore: 30 },
-                                { id: 2, date: '2023-06-01', score: 28, maxScore: 30 },
-                                { id: 3, date: '2023-06-20', score: 30, maxScore: 30 },
-                            ]}
-                            columns={[
-                                { 
-                                    title: 'Ngày làm bài', 
-                                    dataIndex: 'date', 
-                                    key: 'date',
-                                    render: (date: string) => new Date(date).toLocaleDateString('vi-VN')
-                                },
-                                { 
-                                    title: 'Điểm số', 
-                                    dataIndex: 'score', 
-                                    key: 'score', 
-                                    render: (score: number, record: HistoryRecord) => (
-                                        <Tag color={score === record.maxScore ? 'green' : 'blue'} className="text-base px-3 py-1">
-                                            {score}/{record.maxScore}
-                                        </Tag>
-                                    )
-                                },
-                                {
-                                    title: 'Chi tiết',
-                                    key: 'action',
-                                    render: (_: any, record: HistoryRecord) => (
-                                        <Link href={`/assignment/result/${record.id}`}>
-                                            <Button type="link" icon={<RightOutlined />}>Xem kết quả</Button>
-                                        </Link>
-                                    ),
-                                },
-                            ]}
-                            className="border rounded-lg overflow-hidden"
-                            pagination={false}
-                        />
-                    </Card>
+                    <HistorySubmission submissions={submissions} assignment={assignment} />
                     <Space className="w-full justify-center" size="large">
                         <Button type="primary" size="large" onClick={handleStart} icon={<RightOutlined />} className=" text-base h-auto">
                             Bắt đầu làm bài
