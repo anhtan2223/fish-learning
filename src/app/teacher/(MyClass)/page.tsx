@@ -1,6 +1,7 @@
 import TeacherListCourse from "@/ui/teacher/list-class";
 import MyPagination from "@/ui/common/pagination";
 import TeacherSearchBar from "@/ui/teacher/search-bar";
+import { myClassMock } from "@/lib/mock/class.mock";
 
 export default function MyCoursePage() {
   return (
@@ -11,9 +12,9 @@ export default function MyCoursePage() {
           <TeacherSearchBar></TeacherSearchBar>
         </div>
       </div>
-      <TeacherListCourse></TeacherListCourse>
+      <TeacherListCourse listClass={myClassMock}></TeacherListCourse>
       <div className="flex w-full justify-end">
-        <MyPagination className="" total={100}></MyPagination>
+        <MyPagination total={myClassMock.length}></MyPagination>
       </div>
     </div>
   );

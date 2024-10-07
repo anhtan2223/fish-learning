@@ -8,12 +8,18 @@ import Link from "next/link";
 
 const { Title, Text } = Typography;
 
+interface AccountSettingsFormValues {
+    username: string;
+    fullName: string;
+    email: string;
+}
+
 export default function AccountSettingsPage() {
     const [loading, setLoading] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
     const router = useRouter();
 
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: AccountSettingsFormValues) => {
         setLoading(true);
         try {
             // Here you would typically send a request to update user information

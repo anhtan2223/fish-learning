@@ -2,8 +2,9 @@
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import ClassElement from './class-element';
 import { pageSizeOptions } from '@config/pagination.config';
+import { ClassProps } from '@/lib/interface/class.interface';
 
-export default function ListClass() {
+export default function ListClass( { listClass } : { listClass : ClassProps[] } ) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -12,13 +13,14 @@ export default function ListClass() {
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 place-content-center">
-            {Array.from({ length: pageSize }).map((_, index) => (
+            {listClass.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((classData, index) => (
                 <div 
                     key={index} 
-                    onClick={() => router.push(`/class/${index}/register`)} 
+                    onClick={() => router.push(`/class/${classData.id}/register`)} 
                     className='flex justify-center cursor-pointer transform hover:scale-105 transition-transform duration-300 ease-in-out'
+                    style={{ width: '100%', height: 'auto' }}
                 >
-                    <ClassElement />
+                    <ClassElement classInfo={classData}/>
                 </div>
             ))}
         </div>
