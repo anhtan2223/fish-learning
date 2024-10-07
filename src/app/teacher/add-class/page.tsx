@@ -8,13 +8,14 @@ import {
   TeamOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import { ClassProps } from "@/lib/interface/class.interface";
 
 const { TextArea } = Input;
 
 export default function AddCourse() {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: ClassProps) => {
     console.log("Form values:", values);
     // Handle form submission
   };
@@ -25,7 +26,7 @@ export default function AddCourse() {
         <BookOutlined className="mr-2" />
         Thêm Mới Lớp Học
       </h1>
-      <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Form<ClassProps> form={form} layout="vertical" onFinish={onFinish}>
         <Form.Item
           label={
             <span className="">
