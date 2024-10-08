@@ -3,54 +3,12 @@ import React, { useState, useEffect } from "react";
 import { Typography, Space, List, Card, Tag, Button, Input, Select, Pagination, Spin, Tooltip } from "antd";
 import { CalendarOutlined, UserOutlined, EyeOutlined, SearchOutlined, ArrowRightOutlined, FireOutlined } from "@ant-design/icons";
 import Link from 'next/link';
+import { BlogPost } from "@/lib/interface";
+import { blogMock } from "@/lib/mock/blog.mock";
 
 const { Title, Paragraph } = Typography;
 const { Search } = Input;
 const { Option } = Select;
-
-interface BlogPost {
-    id: string;
-    title: string;
-    datePublish: string;
-    author: string;
-    tags: string[];
-    image: string;
-    views: number;
-    excerpt: string;
-}
-
-const dummyPosts: BlogPost[] = [
-    {
-        id: "1",
-        title: "The Future of Artificial Intelligence in Education",
-        datePublish: "May 15, 2023",
-        author: "Dr. Jane Smith",
-        tags: ["AI", "Education", "Technology"],
-        image: "/example.png",
-        views: 1500,
-        excerpt: "Explore how AI is revolutionizing the education sector, from personalized learning to intelligent tutoring systems."
-    },
-    {
-        id: "2",
-        title: "Blockchain Technology: Beyond Cryptocurrency",
-        datePublish: "June 2, 2023",
-        author: "John Doe",
-        tags: ["Blockchain", "Technology", "Innovation"],
-        image: "/example2.png",
-        views: 1200,
-        excerpt: "Discover the potential applications of blockchain technology beyond cryptocurrencies, including supply chain management and digital identity verification."
-    },
-    {
-        id: "3",
-        title: "The Rise of Quantum Computing",
-        datePublish: "July 10, 2023",
-        author: "Dr. Alice Johnson",
-        tags: ["Quantum Computing", "Technology", "Science"],
-        image: "/example3.png",
-        views: 980,
-        excerpt: "Learn about the principles of quantum computing and its potential to revolutionize fields such as cryptography, drug discovery, and financial modeling."
-    },
-];
 
 export default function BlogPage() {
     const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -64,8 +22,8 @@ export default function BlogPage() {
     useEffect(() => {
         // Simulate API call
         setTimeout(() => {
-            setPosts(dummyPosts);
-            setFilteredPosts(dummyPosts);
+            setPosts(blogMock);
+            setFilteredPosts(blogMock);
             setLoading(false);
         }, 1000);
     }, []);

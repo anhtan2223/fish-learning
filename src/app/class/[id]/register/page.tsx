@@ -69,7 +69,7 @@ export default function Page() {
             <div className="flex justify-center w-full">
               <Title level={2} className="text-center ">
                 <BookOutlined className="mr-2" />
-                Máy Học Ứng Dụng
+                {classData?.className}
               </Title>
             </div>
             <div style={{ width: "82px" }}></div> {/* Spacer for alignment */}
