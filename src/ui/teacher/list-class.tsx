@@ -16,7 +16,7 @@ export default function ListClass({ listClass }: { listClass: ClassProps[] }) {
             {listClass.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((classData, index) => (
                 <div 
                     key={index} 
-                    onClick={() => router.push(`/class/${classData.id}/register`)} 
+                    onClick={() => router.push(`/teacher/class/${classData.id}`)} 
                     className='flex justify-center cursor-pointer transform hover:scale-105 transition-transform duration-300 ease-in-out'
                 >
                     <ClassElement classInfo={classData} />

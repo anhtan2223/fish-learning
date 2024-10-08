@@ -26,6 +26,8 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import { listStudents } from "@mock";
+import { Student } from "@/lib/interface";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -34,8 +36,8 @@ export default function ClassSettingPage() {
   const [form] = Form.useForm();
   const router = useRouter();
   const [classData, setClassData] = useState<any>(null);
-  const [students, setStudents] = useState<any[]>([]);
-  const [filteredStudents, setFilteredStudents] = useState<any[]>([]);
+  const [students, setStudents] = useState<Student[]>(listStudents); // Updated to use listStudents from mock data
+  const [filteredStudents, setFilteredStudents] = useState<any[]>(listStudents); // Updated to use listStudents from mock data
   const [showSettings, setShowSettings] = useState(true);
   const [showStudents, setShowStudents] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,15 +52,6 @@ export default function ClassSettingPage() {
       description: "This is a sample class description",
       code: "ABC123",
     });
-
-    // Generate a larger list of mock students
-    const mockStudents = Array.from({ length: 50 }, (_, index) => ({
-      id: index + 1,
-      name: `Học sinh ${index + 1}`,
-      email: `student${index + 1}@example.com`,
-    }));
-    setStudents(mockStudents);
-    setFilteredStudents(mockStudents);
   }, []);
 
   const onFinish = (values: any) => {
@@ -87,8 +80,9 @@ export default function ClassSettingPage() {
   const handleSearch = (value: string) => {
     const filtered = students.filter(
       (student) =>
-        student.name.toLowerCase().includes(value.toLowerCase()) ||
-        student.email.toLowerCase().includes(value.toLowerCase())
+        student.fullName.toLowerCase().includes(value.toLowerCase()) ||
+        student.email.toLowerCase().includes(value.toLowerCase()) ||
+        student.id.toString().includes(value)
     );
     setFilteredStudents(filtered);
     setCurrentPage(1);
@@ -217,7 +211,7 @@ export default function ClassSettingPage() {
               {showStudents && (
                 <>
                   <Search
-                    placeholder="Tìm kiếm học sinh"
+                    placeholder="Tìm kiếm học sinh theo tên hoặc MSSV"
                     onSearch={handleSearch}
                     style={{ marginBottom: 16 }}
                   />
@@ -245,7 +239,7 @@ export default function ClassSettingPage() {
                         <List.Item.Meta
                           avatar={<Avatar icon={<UserOutlined />} />}
                           title={
-                            <a href={`/student/${item.id}`}>{item.name}</a>
+                            <a href={`/student/${item.id}`}>{item.fullName}</a>
                           }
                           description={item.email}
                         />
